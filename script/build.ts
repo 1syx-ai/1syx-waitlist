@@ -1,6 +1,7 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile } from "fs/promises";
+import { rm, readFile, cp } from "fs/promises";
+import { join } from "path";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -38,6 +39,17 @@ async function buildAll() {
 
   console.log("building client...");
   await viteBuild();
+
+  console.log("copying assets for server access...");
+  // Copy linkedin_postimage to dist/public for server to access in production
+  const linkedinImageSrc = join("client", "src", "assets", "linkedin_postimage");
+  const linkedinImageDest = join("dist", "public", "linkedin_postimage");
+  try {
+    await cp(linkedinImageSrc, linkedinImageDest, { recursive: true });
+    console.log("LinkedIn post image copied to dist/public");
+  } catch (error: any) {
+    console.warn(`Warning: Could not copy LinkedIn image: ${error.message}`);
+  }
 
   console.log("building server...");
   const pkg = JSON.parse(await readFile("package.json", "utf-8"));

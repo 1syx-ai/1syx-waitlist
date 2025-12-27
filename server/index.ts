@@ -3,6 +3,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import session from "express-session";
+import memorystore from "memorystore";
 import { appendToSheet, ensureHeaders } from "./lib/googleSheets.js";
 import {
   getLinkedInAuthUrl,
@@ -39,15 +40,24 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 
 // Session middleware for OAuth state management
+const MemoryStore = memorystore(session);
+
 app.use(
   session({
+    name: "1syx.session", // Named session cookie for easier debugging
+    store: new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    }),
     secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
-    resave: false,
-    saveUninitialized: false,
+    resave: true, // Force save on every request to ensure persistence
+    saveUninitialized: true, // Save even uninitialized sessions (needed for OAuth flow)
+    rolling: true, // Reset expiration on activity
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
+      sameSite: "lax", // Important for OAuth redirects
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      path: "/", // Ensure cookie is sent for all paths
     },
   })
 );
@@ -88,6 +98,21 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Temporary store for OAuth state (fallback if session cookie is lost)
+// This is cleared after use for security
+const oauthStateStore = new Map<string, { state: string; formData: any; timestamp: number }>();
+
+// Cleanup old entries every 10 minutes
+setInterval(() => {
+  const now = Date.now();
+  const maxAge = 10 * 60 * 1000; // 10 minutes
+  for (const [key, value] of oauthStateStore.entries()) {
+    if (now - value.timestamp > maxAge) {
+      oauthStateStore.delete(key);
+    }
+  }
+}, 10 * 60 * 1000);
 
 // Waitlist form submission endpoint
 app.post("/api/waitlist/submit", async (req: Request, res: Response) => {
@@ -179,13 +204,40 @@ app.get("/api/linkedin/auth", (req: Request, res: Response) => {
   try {
     // Generate state for CSRF protection
     const state = randomBytes(32).toString("hex");
-    req.session.linkedinState = state;
-    req.session.pendingFormData = req.query.formData
+    const pendingFormData = req.query.formData
       ? JSON.parse(decodeURIComponent(req.query.formData as string))
       : null;
 
-    const authUrl = getLinkedInAuthUrl(state);
-    res.redirect(authUrl);
+    // Store in session (primary method)
+    req.session.linkedinState = state;
+    req.session.pendingFormData = pendingFormData;
+
+    // Also store in temporary map as fallback (in case session cookie is lost)
+    oauthStateStore.set(state, {
+      state,
+      formData: pendingFormData,
+      timestamp: Date.now(),
+    });
+
+    log(`Session ID: ${req.sessionID}`);
+    log(`Setting state: ${state.substring(0, 8)}...`);
+
+    // Save session before redirect to ensure it's persisted
+    req.session.save((err) => {
+      if (err) {
+        log(`Error saving session: ${err.message}`);
+        return res.status(500).json({
+          success: false,
+          message: "Failed to initiate LinkedIn authorization",
+        });
+      }
+
+      log(`Session saved. State: ${state.substring(0, 8)}..., Session ID: ${req.sessionID}`);
+      log(`Cookie being sent: ${res.getHeader("Set-Cookie") ? "yes" : "no"}`);
+      
+      const authUrl = getLinkedInAuthUrl(state);
+      res.redirect(authUrl);
+    });
   } catch (error: any) {
     log(`Error initiating LinkedIn auth: ${error.message}`);
     res.status(500).json({
@@ -200,6 +252,28 @@ app.get("/auth/linkedin/callback", async (req: Request, res: Response) => {
   try {
     const { code, state, error } = req.query;
 
+    // Debug logging - check if cookie is being received
+    log(`Callback received - State from query: ${state ? (state as string).substring(0, 8) + "..." : "missing"}`);
+    log(`Session ID: ${req.sessionID}`);
+    log(`Cookies received: ${req.headers.cookie ? "yes" : "no"}`);
+    log(`Session state: ${req.session.linkedinState ? req.session.linkedinState.substring(0, 8) + "..." : "missing"}`);
+    
+    // Try to reload session from store if it's missing
+    if (!req.session.linkedinState && req.sessionID) {
+      log(`Attempting to reload session ${req.sessionID} from store...`);
+      // Force session reload by accessing it
+      await new Promise<void>((resolve) => {
+        req.session.reload((err) => {
+          if (err) {
+            log(`Error reloading session: ${err.message}`);
+          } else {
+            log(`Session reloaded. State now: ${req.session.linkedinState ? req.session.linkedinState.substring(0, 8) + "..." : "still missing"}`);
+          }
+          resolve();
+        });
+      });
+    }
+
     // Check for errors from LinkedIn
     if (error) {
       log(`LinkedIn OAuth error: ${error}`);
@@ -211,8 +285,29 @@ app.get("/auth/linkedin/callback", async (req: Request, res: Response) => {
     }
 
     // Verify state to prevent CSRF attacks
-    if (!state || state !== req.session.linkedinState) {
-      log("Invalid state parameter in LinkedIn callback");
+    // First try session (primary method), then fallback to temporary store
+    let isValidState = false;
+    let storedFormData = null;
+
+    if (state && req.session.linkedinState && state === req.session.linkedinState) {
+      // Session-based validation (preferred)
+      isValidState = true;
+      storedFormData = req.session.pendingFormData;
+      log(`State validated via session`);
+    } else if (state && oauthStateStore.has(state as string)) {
+      // Fallback to temporary store (if session cookie was lost)
+      const stored = oauthStateStore.get(state as string);
+      if (stored) {
+        isValidState = true;
+        storedFormData = stored.formData;
+        // Clean up after use
+        oauthStateStore.delete(state as string);
+        log(`State validated via temporary store (session cookie was lost)`);
+      }
+    }
+
+    if (!state || !isValidState) {
+      log(`Invalid state parameter in LinkedIn callback. Expected: ${req.session.linkedinState ? req.session.linkedinState.substring(0, 8) + "..." : "undefined"}, Got: ${state ? (state as string).substring(0, 8) + "..." : "undefined"}`);
       return res.redirect(
         `/waitlist?error=invalid_state&message=${encodeURIComponent(
           "Invalid authorization state"
@@ -231,8 +326,8 @@ app.get("/auth/linkedin/callback", async (req: Request, res: Response) => {
     // Exchange code for access token
     const accessToken = await exchangeCodeForToken(code as string);
 
-    // Post content
-    const postText = `I came across 1SYX (a KLYRR Labs Product), a new tool trying to fix how brands explain what they do and turn that into content.
+    // Get post content from stored form data (user-edited) or use default
+    let postText = `I came across 1SYX (a KLYRR Labs Product), a new tool trying to fix how brands explain what they do and turn that into content.
 
 Felt interesting enough to back the effort, so I have joined their Jan 2026 waitlist.
 
@@ -244,13 +339,32 @@ Check out 1SYX: https://www.linkedin.com/showcase/1syx-ai/
 
 #1syx #1syxai #StrategicMarketing #KLYRRLabs #ContentMarketing #Marketing #MarketingOps #GoToMarketAlignment`;
 
-    // Image path
-    const imagePath = join(
-      process.cwd(),
-      "attached_assets",
-      "linkedin_postimage",
-      "WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg"
-    );
+    // Use user-edited content if available (from session or temp store)
+    const formDataToUse = storedFormData || req.session.pendingFormData;
+    if (formDataToUse?.postContent) {
+      postText = formDataToUse.postContent;
+      log(`Using user-edited post content (${postText.length} characters)`);
+    } else {
+      log(`Using default post content`);
+    }
+
+    // Image path - in production, assets are in dist/public, in dev they're in client/src/assets
+    const imagePath = process.env.NODE_ENV === "production"
+      ? join(
+          process.cwd(),
+          "dist",
+          "public",
+          "linkedin_postimage",
+          "WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg"
+        )
+      : join(
+          process.cwd(),
+          "client",
+          "src",
+          "assets",
+          "linkedin_postimage",
+          "WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg"
+        );
 
     // Create LinkedIn post with image
     const postResult = await createLinkedInPostWithImage(
@@ -262,9 +376,11 @@ Check out 1SYX: https://www.linkedin.com/showcase/1syx-ai/
     log(`LinkedIn post created successfully: ${postResult.id}`);
 
     // If there's pending form data, save it to Google Sheets
-    if (req.session.pendingFormData) {
+    // Use storedFormData from validation (could be from session or temp store)
+    const formDataToSave = storedFormData || req.session.pendingFormData;
+    if (formDataToSave) {
       try {
-        const formData = req.session.pendingFormData;
+        const formData = formDataToSave;
         const spreadsheetId =
           process.env.GOOGLE_SHEET_ID ||
           "1OaF6GBIK7wn61t5TbWrpxEaqT4V-1wgzDDEqhosMpFw";

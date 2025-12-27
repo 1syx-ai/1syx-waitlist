@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Link } from "wouter";
 import logoImage from "@assets/1syx-logo2_1764931232010.jpg";
 import { Footer } from "@/components/ui/footer";
@@ -52,6 +53,7 @@ import {
   Target,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import type React from "react";
 import { cn } from "@/lib/utils";
 import { useLocation } from "wouter";
 
@@ -61,6 +63,7 @@ import blueprintImage from "@assets/generated_images/technical_blueprint_of_data
 import executivesImage from "@assets/generated_images/heroWaitlist6.jpeg";
 import facadeImage from "@assets/generated_images/abstract_steel_glass_facade_texture.png";
 import analysisVideo from "@assets/1syx-record.mp4";
+import linkedinPostImage from "@assets/linkedin_postimage/WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name is required." }),
@@ -571,6 +574,27 @@ export default function Waitlist() {
   const [upgradeOption, setUpgradeOption] = useState<"yes" | "no" | null>(null);
   const [pendingFormData, setPendingFormData] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // LinkedIn Post Preview/Edit Modal State
+  const [showPostPreviewModal, setShowPostPreviewModal] = useState(false);
+  const [postContent, setPostContent] = useState("");
+  const [postContentConfirmed, setPostContentConfirmed] = useState(false);
+  
+  // LinkedIn Post Success Modal State
+  const [showLinkedInSuccessModal, setShowLinkedInSuccessModal] = useState(false);
+  
+  // Default post content (editable part only, without hashtags and link)
+  const defaultPostContent = `I came across 1SYX (a KLYRR Labs Product), a new tool trying to fix how brands explain what they do and turn that into content.
+
+Felt interesting enough to back the effort, so I have joined their Jan 2026 waitlist.
+
+If it works, it could help with clearer story, cleaner messaging and more useful content. If it does not, at least a serious attempt was made.
+
+Doing my bit to support a budding entrepreneur who is building in public.`;
+
+  // Fixed parts (not editable)
+  const postHashtags = `#1syx #1syxai #StrategicMarketing #KLYRRLabs #ContentMarketing #Marketing #MarketingOps #GoToMarketAlignment`;
+  const postLink = `Check out 1SYX: https://www.linkedin.com/showcase/1syx-ai/`;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -591,21 +615,26 @@ export default function Waitlist() {
     const message = urlParams.get("message");
 
     if (success === "true") {
-      const toastId = toast({
-        title: "Success!",
-        description: decodeURIComponent(message || "Your LinkedIn post has been created successfully!"),
-      });
+      // Show beautiful success modal instead of toast
+      setShowLinkedInSuccessModal(true);
       // Reset form and close modals
       form.reset();
       setPendingFormData(null);
       setShowSuccessModal(false);
       setUpgradeOption(null);
-      // Auto-dismiss toast after 5 seconds
-      setTimeout(() => {
-        toastId.dismiss();
-      }, 5000);
-      // Clean up URL parameters
+      
+      // Clean up URL parameters immediately
       window.history.replaceState({}, "", window.location.pathname);
+      
+      // Auto-dismiss modal after 3 seconds
+      const autoDismissTimer = setTimeout(() => {
+        setShowLinkedInSuccessModal(false);
+      }, 3000);
+      
+      // Clean up timer if component unmounts
+      return () => {
+        clearTimeout(autoDismissTimer);
+      };
     } else if (error) {
       const toastId = toast({
         title: "Error",
@@ -679,14 +708,38 @@ export default function Waitlist() {
     await saveToDatabase("no");
   };
 
-  // Handle LinkedIn post + redirect to OAuth
+  // Handle LinkedIn post button click - show preview modal
   const handleLinkedInPost = () => {
     if (!pendingFormData) return;
     
-    // Encode form data to pass to OAuth flow
-    const encodedFormData = encodeURIComponent(JSON.stringify(pendingFormData));
+    // Initialize post content with default if not set
+    if (!postContent) {
+      setPostContent(defaultPostContent);
+    }
     
-    // Redirect to LinkedIn OAuth endpoint with form data
+    // Reset confirmation checkbox
+    setPostContentConfirmed(false);
+    
+    // Show preview modal
+    setShowPostPreviewModal(true);
+  };
+
+  // Handle actual LinkedIn OAuth redirect after confirmation
+  const handleConfirmAndPost = () => {
+    if (!pendingFormData || !postContentConfirmed || !postContent.trim()) return;
+    
+    // Combine editable content with fixed hashtags and link
+    const fullPostText = `${postContent.trim()}\n\n${postLink}\n\n${postHashtags}`;
+    
+    // Encode form data and post content to pass to OAuth flow
+    const dataToSend = {
+      ...pendingFormData,
+      postContent: fullPostText,
+    };
+    const encodedFormData = encodeURIComponent(JSON.stringify(dataToSend));
+    
+    // Close modal and redirect to LinkedIn OAuth endpoint
+    setShowPostPreviewModal(false);
     window.location.href = `/api/linkedin/auth?formData=${encodedFormData}`;
   };
 
@@ -814,29 +867,7 @@ export default function Waitlist() {
                   </div>
                 )}
 
-                {/* Overlay UI elements to make it look like a system interface */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 z-20">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="font-mono text-[10px] text-red-500 tracking-widest uppercase">
-                    Live Analysis
-                  </span>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end z-20">
-                  <div className="space-y-1">
-                    <div className="font-mono text-[10px] text-zinc-500">
-                      SIGNAL_STRENGTH
-                    </div>
-                    <div className="flex gap-0.5">
-                      <div className="w-1 h-3 bg-accent"></div>
-                      <div className="w-1 h-3 bg-accent"></div>
-                      <div className="w-1 h-3 bg-accent"></div>
-                      <div className="w-1 h-3 bg-accent/50"></div>
-                    </div>
-                  </div>
-                  <div className="font-mono text-[10px] text-zinc-500">
-                    SYSTEM_ID: 1SYX-V1
-                  </div>
-                </div>
+                
 
                 {/* Grid overlay */}
                 <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none z-0"></div>
@@ -1479,6 +1510,132 @@ export default function Waitlist() {
 
       <TermsModal open={showTerms} onOpenChange={setShowTerms} />
 
+      {/* LinkedIn Post Preview/Edit Modal */}
+      <Dialog open={showPostPreviewModal} onOpenChange={setShowPostPreviewModal}>
+        <DialogContent className="sm:max-w-2xl bg-zinc-950 border-zinc-800 text-white max-h-[90vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-serif">
+              Preview & Edit Your LinkedIn Post
+            </DialogTitle>
+            <DialogDescription className="text-zinc-400">
+              Review and customize your post before sharing. The hashtags and link will be added automatically.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex-1 overflow-y-auto space-y-4 py-4">
+            {/* Editable Content */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-300">
+                Post Content (Editable)
+              </label>
+              <Textarea
+                value={postContent}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                  const newContent = e.target.value;
+                  if (newContent.length <= 1200) {
+                    setPostContent(newContent);
+                  }
+                }}
+                className="bg-zinc-900 border-zinc-700 text-white min-h-[200px] resize-y"
+                placeholder="Write your post content here..."
+              />
+              <div className="flex justify-between items-center text-xs text-zinc-500">
+                <span className={cn(
+                  postContent.length > 1100 && "text-yellow-500",
+                  postContent.length >= 1200 && "text-red-500"
+                )}>
+                  {postContent.length} / 1200 characters
+                </span>
+                {postContent.length >= 1200 && (
+                  <span className="text-red-500">Character limit reached</span>
+                )}
+              </div>
+            </div>
+
+            {/* Fixed Link (Read-only) */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-300">
+                Link (Automatically Added)
+              </label>
+              <div className="bg-zinc-900 border border-zinc-700 p-3 rounded-md text-zinc-400 text-sm">
+                {postLink}
+              </div>
+            </div>
+
+            {/* Fixed Hashtags (Read-only) */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-300">
+                Hashtags (Automatically Added)
+              </label>
+              <div className="bg-zinc-900 border border-zinc-700 p-3 rounded-md text-zinc-400 text-sm">
+                {postHashtags}
+              </div>
+            </div>
+
+            {/* Preview of Full Post */}
+            <div className="space-y-2 pt-4 border-t border-zinc-800">
+              <label className="text-sm font-medium text-zinc-300">
+                Full Post Preview
+              </label>
+              {/* LinkedIn-style post preview card */}
+              <div className="bg-zinc-900 border border-zinc-700 rounded-md overflow-hidden">
+                {/* Image (LinkedIn shows image above text) */}
+                <div className="w-full aspect-video bg-zinc-800 overflow-hidden">
+                  <img
+                    src={linkedinPostImage}
+                    alt="LinkedIn post preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Text content */}
+                <div className="p-4">
+                  <div className="text-sm text-zinc-300 whitespace-pre-wrap">
+                    {postContent.trim() || "(Your content will appear here)"}
+                    {postContent.trim() && `\n\n${postLink}\n\n${postHashtags}`}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Confirmation Checkbox */}
+            <div className="flex items-start space-x-3 pt-2">
+              <Checkbox
+                id="post-confirm"
+                checked={postContentConfirmed}
+                onCheckedChange={(checked) => setPostContentConfirmed(checked === true)}
+                className="border-zinc-600 data-[state=checked]:bg-accent data-[state=checked]:border-accent mt-1"
+              />
+              <label
+                htmlFor="post-confirm"
+                className="text-sm text-zinc-300 cursor-pointer leading-relaxed"
+              >
+                I confirm this content and agree to post this on LinkedIn
+              </label>
+            </div>
+          </div>
+
+          <DialogFooter className="flex-col sm:flex-row gap-2 pt-4 border-t border-zinc-800">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowPostPreviewModal(false);
+                setPostContentConfirmed(false);
+              }}
+              className="w-full sm:w-auto border-zinc-700 hover:bg-zinc-800"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmAndPost}
+              disabled={!postContentConfirmed || !postContent.trim() || postContent.length > 1200}
+              className="w-full sm:w-auto bg-[#0077b5] hover:bg-[#006396] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Post on LinkedIn
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
         <DialogContent className="sm:max-w-md bg-zinc-950 border-zinc-800 text-white">
           <DialogHeader>
@@ -1577,6 +1734,149 @@ export default function Waitlist() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* LinkedIn Post Success Modal with Celebration */}
+      <AnimatePresence>
+        {showLinkedInSuccessModal && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setShowLinkedInSuccessModal(false);
+                window.history.replaceState({}, "", window.location.pathname);
+              }}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+            />
+            
+            {/* Success Modal */}
+            <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 20 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30,
+                }}
+                className="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border-2 border-red-500/50 rounded-2xl shadow-2xl max-w-md w-full p-8 pointer-events-auto relative overflow-hidden"
+              >
+                {/* Celebration Confetti Effect */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  {[...Array(20)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{
+                        x: "50%",
+                        y: "50%",
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      animate={{
+                        x: `${50 + (Math.random() - 0.5) * 200}%`,
+                        y: `${50 + (Math.random() - 0.5) * 200}%`,
+                        opacity: 0,
+                        scale: 0,
+                        rotate: Math.random() * 360,
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: Math.random() * 0.5,
+                        ease: "easeOut",
+                      }}
+                      className="absolute w-2 h-2 rounded-full"
+                      style={{
+                        backgroundColor: ["#ef4444", "#22c55e", "#3b82f6", "#f59e0b"][
+                          Math.floor(Math.random() * 4)
+                        ],
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Close Button */}
+                <button
+                  onClick={() => {
+                    setShowLinkedInSuccessModal(false);
+                    window.history.replaceState({}, "", window.location.pathname);
+                  }}
+                  className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors z-10"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                {/* Content */}
+                <div className="relative z-10 text-center space-y-6">
+                  {/* Animated Checkmark Circle */}
+                  <div className="flex justify-center">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15,
+                        delay: 0.2,
+                      }}
+                      className="w-24 h-24 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/50"
+                    >
+                      <motion.div
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.4,
+                          ease: "easeOut",
+                        }}
+                      >
+                        <Check className="w-12 h-12 text-white stroke-[4]" />
+                      </motion.div>
+                    </motion.div>
+                  </div>
+
+                  {/* Success Message */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="space-y-3"
+                  >
+                    <h2 className="text-3xl font-serif font-bold text-white">
+                      Success!
+                    </h2>
+                    <p className="text-lg text-zinc-300 leading-relaxed">
+                      Your LinkedIn post has been created successfully!
+                    </p>
+                    <p className="text-sm text-zinc-400">
+                      You've been added to the daily 10x content upgrade.
+                    </p>
+                  </motion.div>
+
+                  {/* Pulsing Ring Effect */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0.8 }}
+                      animate={{
+                        scale: [1, 1.2, 1.4],
+                        opacity: [0.8, 0.4, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeOut",
+                      }}
+                      className="absolute w-32 h-32 rounded-full border-2 border-green-500/50"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

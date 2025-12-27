@@ -1394,29 +1394,7 @@ export default function Home() {
                 </div>
                 </div>
                 )}
-                {/* Overlay UI elements to make it look like a system interface */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 z-20">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="font-mono text-[10px] text-red-500 tracking-widest uppercase">
-                    Live Analysis
-                  </span>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end z-20">
-                  <div className="space-y-1">
-                    <div className="font-mono text-[10px] text-zinc-500">
-                      SIGNAL_STRENGTH
-                    </div>
-                    <div className="flex gap-0.5">
-                      <div className="w-1 h-3 bg-accent"></div>
-                      <div className="w-1 h-3 bg-accent"></div>
-                      <div className="w-1 h-3 bg-accent"></div>
-                      <div className="w-1 h-3 bg-accent/50"></div>
-                    </div>
-                  </div>
-                  <div className="font-mono text-[10px] text-zinc-500">
-                    SYSTEM_ID: 1SYX-V1
-                  </div>
-                </div>
+                
             </div>
 
             <div className="grid md:grid-cols-2 gap-12">
