@@ -257,9 +257,9 @@ const InteractiveWhoItIsFor = () => {
                   <div className="flex justify-between items-start mb-1 shrink-0">
                     <div>
                       <h3 className="text-xl md:text-3xl font-serif font-bold mb-1 text-zinc-900">
-                        Who <span className="text-2xl md:text-5xl">1</span>SYX is not for
+                        Who <span className="text-2xl md:text-4xl">1</span>SYX is not for
                       </h3>
-                      <p className="text-red-500 font-mono text-[10px] md:text-sm uppercase tracking-wider mb-2">
+                      <p className="text-red-500 font-mono text-[10px] md:text-xs uppercase tracking-wider mb-2">
                         Status: Disqualified
                       </p>
                       <p className="text-zinc-900 font-mono text-xs md:text-base uppercase tracking-wider">
@@ -311,11 +311,11 @@ const InteractiveWhoItIsFor = () => {
                 <div className="p-6 md:p-5 flex flex-col h-full overflow-y-auto">
                   <div className="flex justify-between items-start mb-2 shrink-0">
                     <div>
-                      <h3 className="text-xl md:text-3xl font-serif font-bold mb-1">
-                        Who <span className="text-3xl md:text-5xl">1</span>SYX Is Really
+                      <h3 className="text-xl md:text-2xl font-serif font-bold mb-1">
+                        Who <span className="text-3xl md:text-4xl">1</span>SYX Is Really
                         Built For
                       </h3>
-                      <p className="text-green-500 font-mono text-[10px] md:text-sm uppercase tracking-wider mb-3">
+                      <p className="text-green-500 font-mono text-[10px] md:text-xs uppercase tracking-wider mb-3">
                         Status: Qualified
                       </p>
                       
@@ -479,7 +479,7 @@ const InteractiveWhoItIsFor = () => {
                         ].map((item, i) => (
                           <li
                             key={i}
-                            className="flex items-center gap-2 text-zinc-400 line-through decoration-zinc-600"
+                            className="flex items-center gap-2 text-zinc-400 line-through decoration-zinc-600 text-sm"
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
                             {item}
@@ -500,7 +500,7 @@ const InteractiveWhoItIsFor = () => {
                         ].map((item, i) => (
                           <li
                             key={i}
-                            className="flex items-start gap-2 text-zinc-900 mb-2"
+                            className="flex items-start gap-2 text-zinc-900 mb-2 text-sm"
                           >
                             <Check className="w-4 h-4 text-green-500 mt-1 shrink-0" />
                             <span>{item}</span>
@@ -1030,10 +1030,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-transparent/20 z-10"></div>
 
         {/* Content */}
-        <div className="container mx-auto relative z-20 grid grid-cols-1 lg:grid-cols-2 h-full items-center" style={{ padding: "0 0", marginLeft: "25px", marginRight: "0" }}>
+        <div className="container mx-auto relative z-20 grid grid-cols-1 lg:grid-cols-[60%_40%] h-full items-center" style={{ padding: "0 0", marginLeft: "25px", marginRight: "0" }}>
           <div className="max-w-8xl py-20  ">
             <FadeIn>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] tracking-tight mb-8">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] tracking-tight mb-8 mt-8">
                 What if your{" "}
                 <span className="italic text-muted-foreground decoration-accent/50 line-through decoration-2">
                   “approved”

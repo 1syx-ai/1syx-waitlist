@@ -78,7 +78,7 @@ export function Navbar() {
           : "bg-transparent py-6",
       )}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className="w-full px-8 flex items-center justify-between">
         <div className="flex items-center border">
           <button
             key="home"
@@ -88,6 +88,7 @@ export function Navbar() {
             <img src={logoImage} alt="1SYX" className="h-10 w-auto object-contain" />
           </button>
         </div>
+        
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -112,7 +113,7 @@ export function Navbar() {
             About Us
           </button> 
           <Link href="/waitlist#section-01">
-            <Button className="rounded-none font-mono text-xs uppercase tracking-wider bg-accent text-white hover:bg-accent/90">
+            <Button className="rounded-none font-mono text-xs uppercase tracking-wider bg-accent text-white hover:bg-accent/90 ">
               Join Waitlist
             </Button>
           </Link>

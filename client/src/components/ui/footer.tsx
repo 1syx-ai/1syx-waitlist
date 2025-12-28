@@ -36,7 +36,7 @@ export function Footer() {
       <CareerModal open={showCareer} onOpenChange={setShowCareer} />
       <PrivacyModal open={showPrivacy} onOpenChange={setShowPrivacy} />
       <footer className="bg-zinc-950 border-t border-zinc-800 text-zinc-300 font-sans mt-auto">
-        <div className="container mx-auto">
+        <div className="w-full">
           <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-zinc-800 border-b border-zinc-800">
             {/* Block 1: Branding */}
             <div className="p-8 md:p-12 flex flex-col justify-between h-full min-h-[200px] hover:bg-zinc-900/30 transition-colors duration-500">

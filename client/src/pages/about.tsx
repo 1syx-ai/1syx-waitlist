@@ -236,7 +236,7 @@ export default function About() {
           <div className="container mx-auto max-w-7xl">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-6xl font-bold text-zinc-900 mb-8">
-                <span className="text-8xl">1</span>SYX Leadership
+                <span className="text-5xl md:text-7xl">1</span>SYX Leadership
               </h2>
               
               <div className="space-y-2 text-lg md:text-xl text-zinc-900 leading-relaxed font-light">

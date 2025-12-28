@@ -352,7 +352,7 @@ const WaitlistFeatures = () => {
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Fixed Heading */}
         <div className="mb-16 md:mb-24 text-center md:text-left">
-          <div className="font-mono text-6xl font-bold text-zinc-800 mb-4">
+          <div className="font-mono text-5xl font-bold text-zinc-800 mb-4">
             03
           </div>
           <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">
@@ -798,23 +798,23 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
         {/* 01 Identity / Hero Section */}
         <section
           id="section-01"
-          className="min-h-screen lg:h-screen relative overflow-hidden border-b border-border flex items-center py-12 lg:py-0 scroll-mt-32"
+          className="min-h-screen lg:h-screen relative overflow-hidden border-b border-border py-12 lg:py-0 scroll-mt-32"
         >
           <ParallaxBackground src={executivesImage} opacity={40} scale={1} />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent/20 z-10"></div>
 
-          <div className="container mx-auto px-6 relative z-20 grid grid-cols-1 lg:grid-cols-[40%_60%] h-full items-center gap-12">
+          <div className="container mx-0 px-6 relative z-20 grid grid-cols-1 lg:grid-cols-[40%_60%] h-full items-center">
             <div className="max-w-2xl py-12">
-              <div className="font-mono text-6xl font-bold text-zinc-800 mb-4">
+              <div className="font-mono text-5xl font-bold text-zinc-800 mb-4">
                 01
               </div>
               <FadeIn>
-                <h1 className="text-5xl md:text-7xl font-serif mb-8 leading-tight">
+                <h1 className="text-5xl md:text-6xl font-serif mb-8 leading-tight">
                   Your brand’s <br />
                   X-factor,{" "}
                   <span className="text-accent">under inspection</span>
                 </h1>
-                <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
+                <p className="text-xl md:text-xl text-muted-foreground leading-relaxed mb-8">
                   The engine that stops your content from pretending it works.
                   1SYX is a marketing intelligence system that reads your story
                   like a sceptical buyer, not a friendly agency.
@@ -837,10 +837,8 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
             </div>
 
             {/* Right Side: Video Placeholder */}
-            <div
-              className="w-full lg:h-full relative mt-8 lg:mt-0 flex items-center justify-center"
-              style={{ paddingRight: "5%", paddingLeft: "5%" }}
-            >
+            <div className="w-full relative md:mx-18 mt-8 lg:mt-0 lg:ml-28 flex items-center justify-center">
+
               <div className="w-full aspect-video bg-white relative overflow-hidden border border-zinc-800 shadow-2xl group">
                 <video
                   className="w-full h-full object-contain transition-all duration-700"
@@ -888,7 +886,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
             <div className="flex flex-col md:flex-row gap-12 lg:gap-24">
               {/* Left Column: Navigation */}
               <div className="md:w-1/3 lg:w-1/4 shrink-0">
-                <div className="font-mono text-6xl font-bold text-zinc-800 mb-4">
+                <div className="font-mono text-5xl font-bold text-zinc-800 mb-4">
                   02
                 </div>
                 <h2 className="text-2xl font-bold mb-6 uppercase tracking-tight">
@@ -966,7 +964,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
 
                     {/* Missing Components */}
                     <div className="space-y-2">
-                      <div className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-2 px-1">
+                      <div className="text-red-500 font-mono text-xs uppercase tracking-widest mb-2 px-1">
                         System Components Missing
                       </div>
                       {activeDamage.missing.map((miss, idx) => (
@@ -994,7 +992,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
         {/* 04 Join Waitlist Form (Renamed from 03) */}
         <Section id="section-04" className="py-20 md:py-32 px-6 bg-background">
           <div className="container mx-auto max-w-5xl">
-            <div className="font-mono text-6xl font-bold text-zinc-800 mb-4">
+            <div className="font-mono text-5xl font-bold text-zinc-800 mb-4">
               04
             </div>
             <motion.div
