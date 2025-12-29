@@ -107,8 +107,10 @@ const oauthStateStore = new Map<string, { state: string; formData: any; timestam
 setInterval(() => {
   const now = Date.now();
   const maxAge = 10 * 60 * 1000; // 10 minutes
-  for (const [key, value] of oauthStateStore.entries()) {
-    if (now - value.timestamp > maxAge) {
+  const keys = Array.from(oauthStateStore.keys());
+  for (const key of keys) {
+    const value = oauthStateStore.get(key);
+    if (value && now - value.timestamp > maxAge) {
       oauthStateStore.delete(key);
     }
   }
@@ -447,15 +449,17 @@ Check out 1SYX: https://www.linkedin.com/showcase/1syx-ai/
   }
 });
 
-(async () => {
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+// Setup error handler (must be after all routes)
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
-  });
+  res.status(status).json({ message });
+  throw err;
+});
 
+// Initialize server setup (for standalone server mode)
+async function initializeServer() {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
@@ -465,14 +469,25 @@ Check out 1SYX: https://www.linkedin.com/showcase/1syx-ai/
     const { setupVite } = await import("./vite");
     await setupVite(httpServer, app);
   }
+}
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
-  httpServer.listen(port, "0.0.0.0", () => {
-    log(`serving on port ${port}`);
-    log(`http://localhost:${port}`);
-  });
-})();
+// Export app for serverless use (Netlify Functions, etc.)
+export { app };
+
+// Only start the server if this file is run directly (not imported)
+// For serverless deployments, we'll import and use the app without starting the server
+if (process.env.NETLIFY !== "true" && !process.env.NETLIFY_FUNCTION) {
+  (async () => {
+    await initializeServer();
+
+    // ALWAYS serve the app on the port specified in the environment variable PORT
+    // Other ports are firewalled. Default to 5000 if not specified.
+    // this serves both the API and the client.
+    // It is the only port that is not firewalled.
+    const port = parseInt(process.env.PORT || "5000", 10);
+    httpServer.listen(port, "0.0.0.0", () => {
+      log(`serving on port ${port}`);
+      log(`http://localhost:${port}`);
+    });
+  })();
+}

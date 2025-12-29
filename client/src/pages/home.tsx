@@ -207,28 +207,29 @@ const InteractiveWhoItIsFor = () => {
         </div>
 
         {/* Header - Static */}
-        <div className="container mx-auto px-6 relative z-10 pt-12 pb-4 text-center shrink-0">
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+        <div className="container mx-auto relative z-10 text-center shrink-0" style={{ paddingLeft: 'clamp(1rem, 3vw, 1.5rem)', paddingRight: 'clamp(1rem, 3vw, 1.5rem)', paddingTop: 'clamp(2rem, 6vw, 3rem)', paddingBottom: 'clamp(0.75rem, 2vw, 1.25rem)' }}>
+          <h2 className="font-serif text-white" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', marginBottom: 'clamp(0.75rem, 2vw, 1.25rem)' }}>
             You are not buying a pretty report.
           </h2>
-          <p className="text-zinc-400 text-base md:text-lg max-w-4xl mx-auto mb-4">
+          <p className="text-zinc-400 max-w-4xl mx-auto" style={{ fontSize: 'clamp(0.875rem, 2vw, 1.125rem)', marginBottom: 'clamp(0.75rem, 2vw, 1.25rem)' }}>
             You are buying a system that refuses to let vague, generic, safe
             lines sit between you and revenue.
           </p>
 
           {/* Tabs Navigation */}
           <div className="flex justify-center mb-0">
-            <div className="inline-flex bg-zinc-900/80 backdrop-blur-md p-1 rounded-full border border-zinc-800 shadow-xl z-50">
+            <div className="inline-flex bg-zinc-900/80 backdrop-blur-md rounded-full border border-zinc-800 shadow-xl z-50" style={{ padding: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => scrollToTab(tab.id)}
                   className={cn(
-                    "px-3 py-1.5 md:px-5 md:py-2 rounded-full text-[10px] md:text-xs font-mono uppercase tracking-wider transition-all duration-300",
+                    "rounded-full font-mono uppercase tracking-wider transition-all duration-300",
                     activeTab === tab.id
                       ? "bg-zinc-100 text-zinc-900 font-bold shadow-md scale-105"
                       : "text-red-500 hover:text-zinc-300 hover:bg-zinc-800/50",
                   )}
+                  style={{ paddingLeft: 'clamp(0.5rem, 1.5vw, 1rem)', paddingRight: 'clamp(0.5rem, 1.5vw, 1rem)', paddingTop: 'clamp(0.25rem, 0.75vw, 0.5rem)', paddingBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)', fontSize: 'clamp(0.625rem, 1vw, 0.75rem)' }}
                 >
                   {tab.label}
                 </button>
@@ -241,8 +242,8 @@ const InteractiveWhoItIsFor = () => {
         <div className="flex-1 relative z-10 flex items-center ">
           <motion.div style={{ x }} className="flex items-center">
             {/* Card 2: The Mismatch (Dark/Warning) */}
-            <div className="w-screen h-full flex items-center justify-center px-2 md:px-8 flex-shrink-0">
-              <div className="w-full max-w-2xl bg-zinc-50 border border-zinc-800 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl max-h-[65vh]">
+            <div className="w-screen h-full flex items-center justify-center flex-shrink-0" style={{ paddingLeft: 'clamp(0.5rem, 3vw, 2rem)', paddingRight: 'clamp(0.5rem, 3vw, 2rem)' }}>
+              <div className="w-full bg-zinc-50 border border-zinc-800 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl" style={{ maxWidth: 'clamp(280px, 40vw, 42rem)' }}>
                 <div className="h-2 bg-red-600 w-full shrink-0"></div>
                 {/* Diagonal Stripes Pattern Overlay */}
                 <div
@@ -253,50 +254,51 @@ const InteractiveWhoItIsFor = () => {
                   }}
                 ></div>
 
-                <div className="p-6 md:p-10 flex flex-col h-full overflow-y-auto">
-                  <div className="flex justify-between items-start mb-1 shrink-0">
+                <div className="flex flex-col h-full min-h-0" style={{ padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
+                  <div className="flex justify-between items-start shrink-0" style={{ marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                     <div>
-                      <h3 className="text-xl md:text-3xl font-serif font-bold mb-1 text-zinc-900">
-                        Who <span className="text-2xl md:text-4xl">1</span>SYX is not for
+                      <h3 className="font-serif font-bold text-zinc-900" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)', marginBottom: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
+                        Who <span style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)' }}>1</span>SYX is not for
                       </h3>
-                      <p className="text-red-500 font-mono text-[10px] md:text-xs uppercase tracking-wider mb-2">
+                      <p className="text-red-500 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                         Status: Disqualified
                       </p>
-                      <p className="text-zinc-900 font-mono text-xs md:text-base uppercase tracking-wider">
+                      <p className="text-zinc-900 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                         1SYX is not for people who
                       </p>
                     </div>
-                    <div className="w-8 h-8 md:w-10 md:h-10 border border-red-500/30 text-red-500 flex items-center justify-center rounded-full bg-red-500/10">
-                      <XIcon className="w-4 h-4 md:w-5 md:h-5" />
+                    <div className="border border-red-500/30 text-red-500 flex items-center justify-center rounded-full bg-red-500/10" style={{ width: 'clamp(2rem, 4vw, 2.5rem)', height: 'clamp(2rem, 4vw, 2.5rem)' }}>
+                      <XIcon style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
                     </div>
                   </div>
 
-                  <div className="space-y-0 mb-0 md:mb-2 flex-1 text-xs md:text-base">
+                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.125rem, 0.5vw, 0.375rem)', marginBottom: 'clamp(0rem, 0.5vw, 0.5rem)' }}>
                     {[
                       "Want tools that flatter, not tools that tell the truth",
                       "Expect AI to fix growth while the story stays vague",
                       "Blame leads, channels or budget instead of the message",
-                      "Treat copy as “creative” and beyond hard judgment",
+                      "Treat copy as \"creative\" and beyond hard judgment",
                       "Only accept soft, polite feedback their team will not fight",
                       "Self-congratulate on content, but never dare face results.",
                     ].map((item, i) => (
                       <div
                         key={i}
-                        className="flex gap-1 md:gap-2 items-start p-1.5 md:p-2.5 hover:bg-red-500/5 transition-colors rounded-sm border border-transparent hover:border-red-500/10"
+                        className="flex items-start hover:bg-red-500/5 transition-colors rounded-sm border border-transparent hover:border-red-500/10"
+                        style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)', padding: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}
                       >
-                        <XIcon className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                        <span className="text-zinc-900 leading-snug">
+                        <XIcon className="text-red-600 shrink-0" style={{ width: 'clamp(0.75rem, 1.5vw, 1rem)', height: 'clamp(0.75rem, 1.5vw, 1rem)', marginTop: 'clamp(0.125rem, 0.25vw, 0.25rem)' }} />
+                        <span className="text-zinc-900 leading-snug" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                           {item}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-1 border-t border-zinc-800 shrink-0">
-                    <p className="text-zinc-500 italic text-xs mb-1">
+                  <div className="border-t border-zinc-800 shrink-0" style={{ paddingTop: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
+                    <p className="text-zinc-500 italic" style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)', marginBottom: 'clamp(0.125rem, 0.5vw, 0.25rem)' }}>
                       System Warning:
                     </p>
-                    <p className="text-xs md:text-base font-medium text-red-500 italic leading-tight border-l-2 border-red-600 pl-3">
+                    <p className="font-medium text-red-500 italic leading-tight border-l-2 border-red-600" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)', paddingLeft: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
                       "If you are fine betting another quarter on untested
                       messaging, you do not need 1SYX."
                     </p>
@@ -305,21 +307,21 @@ const InteractiveWhoItIsFor = () => {
               </div>
             </div>
             {/* Card 1: The Fit (White/Clean) */}
-            <div className="w-screen h-full flex items-center justify-center px-4 md:px-8 flex-shrink-0">
-              <div className="w-full max-w-2xl bg-zinc-50 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl max-h-[65vh]">
+            <div className="w-screen h-full flex items-center justify-center flex-shrink-0" style={{ paddingLeft: 'clamp(0.5rem, 3vw, 2rem)', paddingRight: 'clamp(0.5rem, 3vw, 2rem)' }}>
+              <div className="w-full bg-zinc-50 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl" style={{ maxWidth: 'clamp(280px, 40vw, 42rem)' }}>
                 <div className="h-2 bg-red-500 w-full shrink-0"></div>
-                <div className="p-6 md:p-5 flex flex-col h-full overflow-y-auto">
-                  <div className="flex justify-between items-start mb-2 shrink-0">
+                <div className="flex flex-col h-full min-h-0" style={{ padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
+                  <div className="flex justify-between items-start shrink-0" style={{ marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                     <div>
-                      <h3 className="text-xl md:text-2xl font-serif font-bold mb-1">
-                        Who <span className="text-3xl md:text-4xl">1</span>SYX Is Really
+                      <h3 className="font-serif font-bold" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)', marginBottom: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
+                        Who <span style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)' }}>1</span>SYX Is Really
                         Built For
                       </h3>
-                      <p className="text-green-500 font-mono text-[10px] md:text-xs uppercase tracking-wider mb-3">
+                      <p className="text-green-500 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)', marginBottom: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
                         Status: Qualified
                       </p>
                       
-                      <p className="text-zinc-900 font-mono text-xs md:text-sm uppercase tracking-wider">
+                      <p className="text-zinc-900 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                         This is not for people who want comfort.
                         <span className="font-bold">
                           {" "}
@@ -327,38 +329,39 @@ const InteractiveWhoItIsFor = () => {
                         </span>
                       </p>
                     </div>
-                    <div className="w-8 h-8 md:w-10 md:h-10  border border-green-500 bg-zinc-100 text-green-500 flex items-center justify-center rounded-full">
-                      <Check className="w-4 h-4 md:w-5 md:h-5" />
+                    <div className="border border-green-500 bg-zinc-100 text-green-500 flex items-center justify-center rounded-full" style={{ width: 'clamp(2rem, 4vw, 2.5rem)', height: 'clamp(2rem, 4vw, 2.5rem)' }}>
+                      <Check style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
                     </div>
                   </div>
 
-                  <div className="space-y-0 mb-2 flex-1 text-xs md:text-base">
+                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.125rem, 0.5vw, 0.375rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                     {[
                       "Know their product is stronger than their story",
-                      "Are tired of hearing 'our leads are bad' while reading safe-soft messaging",
+                      "Are tired of hearing 'our leads are bad' while reading safe-soft messaging",
                       "Want one harsh standard for all external communication",
                       "Prefer one sharp report sting over a slow pipeline bleed.",
                       "Are willing to see exactly where their own words are the bottleneck",
                     ].map((item, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-2 p-2.5 rounded-sm hover:bg-white transition-colors border border-transparent hover:border-zinc-200"
+                        className="flex items-start rounded-sm hover:bg-white transition-colors border border-transparent hover:border-zinc-200"
+                        style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)', padding: 'clamp(0.5rem, 1vw, 0.625rem)' }}
                       >
-                        <div className="mt-1 w-4 h-4 border border-zinc-400 text-zinc-900 rounded-sm flex items-center justify-center shrink-0">
-                          <div className="w-2.5 h-2.5 bg-green-500 rounded-[1px]"></div>
+                        <div className="border border-zinc-400 text-zinc-900 rounded-sm flex items-center justify-center shrink-0" style={{ width: 'clamp(0.875rem, 1.5vw, 1rem)', height: 'clamp(0.875rem, 1.5vw, 1rem)', marginTop: 'clamp(0.125rem, 0.25vw, 0.25rem)' }}>
+                          <div className="bg-green-500 rounded-[1px]" style={{ width: 'clamp(0.5rem, 1vw, 0.625rem)', height: 'clamp(0.5rem, 1vw, 0.625rem)' }}></div>
                         </div>
-                        <p className="text-zinc-800 font-medium leading-snug">
+                        <p className="text-zinc-800 font-medium leading-snug" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                           {item}
                         </p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-5 border-t border-zinc-300 shrink-0">
-                    <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
+                  <div className="border-t border-zinc-300 shrink-0" style={{ paddingTop: 'clamp(0.75rem, 1.5vw, 1.25rem)' }}>
+                    <p className="font-mono uppercase tracking-widest text-zinc-500" style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                       Designed For
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap" style={{ gap: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                       {[
                         "FOUNDERS",
                         "CMOs",
@@ -368,7 +371,8 @@ const InteractiveWhoItIsFor = () => {
                       ].map((role, i) => (
                         <span
                           key={i}
-                          className="px-2 py-1 bg-white border border-green-300 text-[10px] font-mono text-green-600 rounded-sm mb-2"
+                          className="bg-white border border-green-300 font-mono text-green-600 rounded-sm"
+                          style={{ paddingLeft: 'clamp(0.25rem, 0.75vw, 0.5rem)', paddingRight: 'clamp(0.25rem, 0.75vw, 0.5rem)', paddingTop: 'clamp(0.125rem, 0.5vw, 0.25rem)', paddingBottom: 'clamp(0.125rem, 0.5vw, 0.25rem)', fontSize: 'clamp(0.625rem, 1vw, 0.75rem)' }}
                         >
                           {role}
                         </span>
@@ -376,7 +380,7 @@ const InteractiveWhoItIsFor = () => {
                     </div>
                   </div>
                   
-                  <p className="text-red-600 font-mono text-[10px] md:text-sm uppercase tracking-wider mb-6">
+                  <p className="text-red-600 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
                     If you speak to an audience, 1SYX will tell you if you are
                     actually saying anything.
                   </p>
@@ -387,47 +391,48 @@ const InteractiveWhoItIsFor = () => {
             </div>
 
             {/* Card 4: What It Is Not (Outline/Contrast) */}
-            <div className="w-screen h-full flex items-center justify-center px-4 md:px-8 flex-shrink-0">
-              <div className="w-full max-w-2xl border border border-zinc-800 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col bg-zinc-50 backdrop-blur-md shadow-2xl max-h-[65vh]">
+            <div className="w-screen h-full flex items-center justify-center flex-shrink-0" style={{ paddingLeft: 'clamp(0.5rem, 3vw, 2rem)', paddingRight: 'clamp(0.5rem, 3vw, 2rem)' }}>
+              <div className="w-full border border border-zinc-800 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col bg-zinc-50 backdrop-blur-md shadow-2xl" style={{ maxWidth: 'clamp(280px, 40vw, 42rem)' }}>
                 <div className="h-2 bg-red-500 w-full shrink-0"></div>
 
-                <div className="p-6 md:p-10 flex flex-col h-full overflow-y-auto">
-                  <div className="flex justify-between items-start mb-4 shrink-0">
+                <div className="flex flex-col h-full min-h-0" style={{ padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
+                  <div className="flex justify-between items-start shrink-0" style={{ marginBottom: 'clamp(0.5rem, 1.5vw, 1rem)' }}>
                     <div>
-                      <h3 className="text-2xl font-serif font-bold mb-1 text-zinc-900">
-                        What <span className="text-3xl">1</span>SYX is not
+                      <h3 className="font-serif font-bold text-zinc-900" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)', marginBottom: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
+                        What <span style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)' }}>1</span>SYX is not
                       </h3>
-                      <p className="text-red-500 font-mono text-xs uppercase tracking-wider">
+                      <p className="text-red-500 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                         Category Error
                       </p>
                     </div>
-                    <div className="w-8 h-8 md:w-10 md:h-10 border border-red-500 text-red-500 flex items-center justify-center rounded-full">
-                      <XIcon className="w-4 h-4 md:w-5 md:h-5" />
+                    <div className="border border-red-500 text-red-500 flex items-center justify-center rounded-full" style={{ width: 'clamp(2rem, 4vw, 2.5rem)', height: 'clamp(2rem, 4vw, 2.5rem)' }}>
+                      <XIcon style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
                     </div>
                   </div>
 
-                  <div className="space-y-5 mb-6 flex-1 text-sm md:text-base">
-                    <p className="text-zinc-900 text-base">
+                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
+                    <p className="text-zinc-900" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
                       So you stop mistaking it for yet another AI
-                      writing toy . . .
+                      writing toy . . .
                       <br />
                       1SYX is not
                     </p>
 
-                    <div className="space-y-3">
+                    <div className="flex flex-col" style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
                       {[
                         "An AI copywriter that spits out fresh content on command",
                         "A grammar or spell checker that tells you everything is fine",
                         "A slide beautifier that makes weak decks look pretty",
-                        "A vanity dashboard that ONLY gives your content a score out of 100",
+                        "A vanity dashboard that ONLY gives your content a score out of 100",
                         "A replacement for strategy, positioning or leadership decisions",
                       ].map((item, i) => (
                         <div
                           key={i}
-                          className="flex gap-3 items-start p-2.5 bg-zinc-150 rounded-sm border border-zinc-800/50 mb-2"
+                          className="flex items-start bg-zinc-150 rounded-sm border border-zinc-800/50"
+                          style={{ gap: 'clamp(0.5rem, 1.5vw, 0.75rem)', padding: 'clamp(0.5rem, 1vw, 0.625rem)' }}
                         >
-                          <div className="mt-1.5 w-2 h-2 bg-red-500 rounded-full shrink-0"></div>
-                          <span className="text-zinc-900 leading-snug">
+                          <div className="bg-red-500 rounded-full shrink-0" style={{ width: 'clamp(0.375rem, 0.75vw, 0.5rem)', height: 'clamp(0.375rem, 0.75vw, 0.5rem)', marginTop: 'clamp(0.25rem, 0.5vw, 0.375rem)' }}></div>
+                          <span className="text-zinc-900 leading-snug" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                             {item}
                           </span>
                         </div>
@@ -438,27 +443,27 @@ const InteractiveWhoItIsFor = () => {
               </div>
             </div>
             {/* Card 3: The Differentiator (Grey/Highlight) */}
-            <div className="w-screen h-full flex items-center justify-center px-4 md:px-8 flex-shrink-0">
-              <div className="w-full max-w-2xl bg-zinc-50 border border-zinc-800 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl max-h-[65vh]">
+            <div className="w-screen h-full flex items-center justify-center flex-shrink-0" style={{ paddingLeft: 'clamp(0.5rem, 3vw, 2rem)', paddingRight: 'clamp(0.5rem, 3vw, 2rem)' }}>
+              <div className="w-full bg-zinc-50 border border-zinc-800 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl" style={{ maxWidth: 'clamp(280px, 40vw, 42rem)' }}>
                 <div className="h-2 bg-red-500 w-full shrink-0"></div>
-                <div className="p-6 md:p-10 flex flex-col h-full overflow-y-auto">
-                  <div className="flex justify-between items-start mb-2 shrink-0">
+                <div className="flex flex-col h-full min-h-0" style={{ padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
+                  <div className="flex justify-between items-start shrink-0" style={{ marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                     <div>
-                      <h3 className="text-2xl font-serif font-bold mb-1 text-zinc-900">
-                        What’s different about{" "}
-                        <span className="text-3xl">1</span>SYX
+                      <h3 className="font-serif font-bold text-zinc-900" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)', marginBottom: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
+                        What's different about{" "}
+                        <span style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)' }}>1</span>SYX
                       </h3>
-                      <p className="text-red-500 font-mono text-xs uppercase tracking-wider">
+                      <p className="text-red-500 font-mono uppercase tracking-wider" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                         Core Philosophy
                       </p>
                     </div>
-                    <div className="w-8 h-8 md:w-10 md:h-10 bg-red-500 text-white flex items-center justify-center rounded-full">
-                      <ShieldAlert className="w-4 h-4 md:w-5 md:h-5" />
+                    <div className="bg-red-500 text-white flex items-center justify-center rounded-full" style={{ width: 'clamp(2rem, 4vw, 2.5rem)', height: 'clamp(2rem, 4vw, 2.5rem)' }}>
+                      <ShieldAlert style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
                     </div>
                   </div>
 
-                  <div className="space-y-5 mb-6 flex-1 text-sm md:text-base">
-                    <p className="text-zinc-900">
+                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
+                    <p className="text-zinc-900" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
                       Most tools try to help you write faster.{" "}
                       <span className="text-red-500 font-bold">
                         1SYX does not care how fast you write.
@@ -467,11 +472,11 @@ const InteractiveWhoItIsFor = () => {
                       sending at all.
                     </p>
 
-                    <div className="space-y-2">
-                      <p className="text-zinc-500 font-mono text-[10px] uppercase">
+                    <div className="flex flex-col" style={{ gap: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
+                      <p className="text-zinc-500 font-mono uppercase" style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)' }}>
                         Instead of:
                       </p>
-                      <ul className="space-y-1.5">
+                      <ul className="flex flex-col" style={{ gap: 'clamp(0.25rem, 0.5vw, 0.375rem)' }}>
                         {[
                           "More templates",
                           "More generic suggestions",
@@ -479,20 +484,21 @@ const InteractiveWhoItIsFor = () => {
                         ].map((item, i) => (
                           <li
                             key={i}
-                            className="flex items-center gap-2 text-zinc-400 line-through decoration-zinc-600 text-sm"
+                            className="flex items-center text-zinc-400 line-through decoration-zinc-600"
+                            style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)', fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                            <span className="rounded-full bg-red-500" style={{ width: 'clamp(0.375rem, 0.75vw, 0.5rem)', height: 'clamp(0.375rem, 0.75vw, 0.5rem)' }}></span>
                             {item}
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="space-y-2">
-                      <p className="text-zinc-500 font-mono text-[10px] uppercase">
+                    <div className="flex flex-col" style={{ gap: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
+                      <p className="text-zinc-500 font-mono uppercase" style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)' }}>
                         You get:
                       </p>
-                      <ul className="space-y-1.5">
+                      <ul className="flex flex-col" style={{ gap: 'clamp(0.25rem, 0.5vw, 0.375rem)' }}>
                         {[
                           "Sentences that are either kept on purpose or removed on purpose.",
                           "Copy reviews that move from 'I do not like this' to 'this is a consequence failure'.",
@@ -500,9 +506,10 @@ const InteractiveWhoItIsFor = () => {
                         ].map((item, i) => (
                           <li
                             key={i}
-                            className="flex items-start gap-2 text-zinc-900 mb-2 text-sm"
+                            className="flex items-start text-zinc-900"
+                            style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)', fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}
                           >
-                            <Check className="w-4 h-4 text-green-500 mt-1 shrink-0" />
+                            <Check className="text-green-500 shrink-0" style={{ width: 'clamp(0.875rem, 1.5vw, 1rem)', height: 'clamp(0.875rem, 1.5vw, 1rem)', marginTop: 'clamp(0.125rem, 0.25vw, 0.25rem)' }} />
                             <span>{item}</span>
                           </li>
                         ))}
@@ -514,11 +521,12 @@ const InteractiveWhoItIsFor = () => {
             </div>
             {/* Card 5: The Fit (White/Clean) */}
             {/* Redesigned card */}
-            <div className="w-screen h-full flex items-center justify-center flex-shrink-0">
+            <div className="w-screen h-full flex items-center justify-center flex-shrink-0" style={{ paddingLeft: 'clamp(0.5rem, 3vw, 2rem)', paddingRight: 'clamp(0.5rem, 3vw, 2rem)' }}>
               <div
-                className="w-full max-w-2xl bg-zinc-50 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl max-h-[65vh] h-[65vh] border border-zinc-300"
+                className="w-full bg-zinc-50 text-zinc-900 rounded-sm overflow-hidden relative group flex flex-col shadow-2xl border border-zinc-300"
                 role="region"
                 aria-label="What now card"
+                style={{ maxWidth: 'clamp(280px, 40vw, 42rem)' }}
               >
                 {/* subtle texture / noise layer (optional - replace path) */}
                 <div
@@ -534,16 +542,16 @@ const InteractiveWhoItIsFor = () => {
                 <div className="h-2 bg-red-600 w-full shrink-0" />
 
                 {/* content area */}
-                <div className="p-6 md:p-8 flex flex-col h-full">
+                <div className="flex flex-col h-full min-h-0" style={{ padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
                   {/* make inner column distribute space so bottom block stays aligned */}
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between min-h-0">
                     {/* TOP: headline + intro */}
-                    <div className="space-y-4 ">
-                      <h3 className="font-serif text-3xl md:text-4xl font-extrabold text-zinc-900 tracking-tight">
+                    <div className="flex flex-col" style={{ gap: 'clamp(0.5rem, 1.5vw, 1rem)' }}>
+                      <h3 className="font-serif font-extrabold text-zinc-900 tracking-tight" style={{ fontSize: 'clamp(1.25rem, 3.5vw, 2.25rem)' }}>
                         What NOW?
                       </h3>
 
-                      <p className="font-mono text-sm md:text-base uppercase tracking-widest text-zinc-700 leading-relaxed">
+                      <p className="font-mono uppercase tracking-widest text-zinc-700 leading-relaxed" style={{ fontSize: 'clamp(0.625rem, 1.5vw, 1rem)' }}>
                         If even one line above felt{" "}
                         <span className="font-bold text-zinc-50 bg-red-600">
                           uncomfortably accurate
@@ -556,20 +564,20 @@ const InteractiveWhoItIsFor = () => {
                     </div>
 
                     {/* MIDDLE: emphasized line with left accent (acts like a featured quote) */}
-                    <div className="mt-0">
-                      <div className="h-px bg-zinc-300 my-4" />
+                    <div>
+                      <div className="h-px bg-zinc-300" style={{ marginTop: 'clamp(0.5rem, 1.5vw, 1rem)', marginBottom: 'clamp(0.5rem, 1.5vw, 1rem)' }} />
 
-                      <p className="font-mono text-sm md:text-base uppercase tracking-wide text-zinc-800 border-l-4 border-red-600 pl-4 leading-relaxed">
+                      <p className="font-mono uppercase tracking-wide text-zinc-800 border-l-4 border-red-600 leading-relaxed" style={{ fontSize: 'clamp(0.625rem, 1.5vw, 1rem)', paddingLeft: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
                         It is about whether you want to keep running the same
                         system with your eyes closed.
                       </p>
                     </div>
 
                     {/* BOTTOM: closing + CTA aligned on same baseline */}
-                    <div className="mt-4 mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between" style={{ marginTop: 'clamp(0.5rem, 1.5vw, 1rem)', marginBottom: 'clamp(0.75rem, 2vw, 2rem)', gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
                       {/* closing line (left) */}
                       <div className="flex-1">
-                        <p className="font-mono text-xs md:text-sm uppercase tracking-wider text-zinc-600 leading-relaxed">
+                        <p className="font-mono uppercase tracking-wider text-zinc-600 leading-relaxed" style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)' }}>
                           The risk is not in not trying 1SYX.
                           <br />
                           The risk is staying blind to your own sentences.
@@ -577,13 +585,14 @@ const InteractiveWhoItIsFor = () => {
                       </div>
 
                       {/* CTA (right) - full width on mobile, compact on desktop) */}
-                      <div className="w-full md:w-auto">
+                      <div className="w-full sm:w-auto">
                         <Link href="/waitlist#section-01">
                           <a
-                            className="inline-flex w-full md:w-auto items-center justify-center bg-red-600 hover:bg-red-500 text-white 
-                                        font-black font-mono uppercase tracking-widest text-sm py-3 px-6 rounded-md 
+                            className="inline-flex w-full sm:w-auto items-center justify-center bg-red-600 hover:bg-red-500 text-white 
+                                        font-black font-mono uppercase tracking-widest rounded-md 
                                         shadow-[0_10px_30px_rgba(220,38,38,0.25)] transition-transform transform-gpu
                                         hover:-translate-y-0.5 active:translate-y-0"
+                            style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.875rem)', paddingTop: 'clamp(0.5rem, 1vw, 0.75rem)', paddingBottom: 'clamp(0.5rem, 1vw, 0.75rem)', paddingLeft: 'clamp(0.75rem, 2vw, 1.5rem)', paddingRight: 'clamp(0.75rem, 2vw, 1.5rem)' }}
                           >
                             Join Waitlist
                           </a>
@@ -1021,41 +1030,44 @@ export default function Home() {
       {/* Hero Section */}
       <section
         id="hero"
-        className="h-screen min-h-[800px] relative overflow-hidden border-b border-border flex items-center"
+        className="min-h-screen min-h-[600px] md:min-h-[700px] lg:min-h-[800px] h-auto lg:h-screen relative overflow-hidden border-b border-border flex items-center"
+        style={{ paddingTop: 'clamp(3rem, 8vw, 5rem)', paddingBottom: 'clamp(3rem, 8vw, 5rem)' }}
       >
         {/* Parallax Background */}
         <ParallaxBackground src={skylineImage} opacity={1} scale={1} />
 
         {/* Overlay to ensure text readability on left half */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-transparent/20 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 md:via-background/95 to-transparent/20 z-10"></div>
 
         {/* Content */}
-        <div className="container mx-auto relative z-20 grid grid-cols-1 lg:grid-cols-[60%_40%] h-full items-center" style={{ padding: "0 0", marginLeft: "25px", marginRight: "0" }}>
-          <div className="max-w-8xl py-20  ">
+        <div className="container mx-auto relative z-20 flex items-center" style={{ paddingLeft: 'clamp(1rem, 5vw, 3rem)', paddingRight: 'clamp(1rem, 5vw, 3rem)' }}>
+          <div className="max-w-4xl xl:max-w-5xl" style={{ paddingTop: 'clamp(2rem, 6vw, 5rem)', paddingBottom: 'clamp(2rem, 6vw, 5rem)' }}>
             <FadeIn>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.1] tracking-tight mb-8 mt-8">
+              <h1 className="font-serif font-medium leading-[1.1] tracking-tight" style={{ fontSize: 'clamp(1.875rem, 5vw, 4.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)', marginTop: 'clamp(0rem, 2vw, 2rem)' }}>
                 What if your{" "}
                 <span className="italic text-muted-foreground decoration-accent/50 line-through decoration-2">
-                  “approved”
-                </span>{" "}
-                content is the biggest risk in your funnel
+                  "approved"
+                </span>{" "} <br />
+                content is the biggest risk <br /> in your funnel
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="text-md md:text-xl leading-relaxed text-muted-foreground space-y-6 mb-12">
+              <div className="flex flex-col leading-relaxed text-muted-foreground" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', gap: 'clamp(1rem, 3vw, 2rem)', marginBottom: 'clamp(2rem, 5vw, 3.5rem)' }}>
                 <p className="text-foreground font-medium">
                   Your product is real. Your team is smart.
                 </p>
                 <p className="text-foreground font-medium">
                   But your pipeline is noisy, fragile and far too dependent on
                   luck.
-                  <br /> Prospects read your lines, nod politely and forget you
+                  <br className="hidden sm:block" />{" "}
+                  Prospects read your lines, nod politely and forget you
                   in 5 seconds.
                 </p>
-                <div className="pt-4 border-l-2 border-accent pl-6">
-                  <p className="text-foreground font-serif italic text-lg md:text-2xl">
-                    You are not losing to better products. <br />
+                <div className="border-l-2 border-accent" style={{ paddingTop: 'clamp(0.75rem, 2vw, 1.25rem)', paddingLeft: 'clamp(1rem, 3vw, 2rem)' }}>
+                  <p className="text-foreground font-serif italic" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)' }}>
+                    You are not losing to better products.{" "}
+                    <br className="hidden sm:block" />
                     You are losing to sharper sentences.
                   </p>
                 </div>
@@ -1063,22 +1075,23 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                <Link href="/waitlist#section-01">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center" style={{ gap: 'clamp(1rem, 3vw, 2rem)' }}>
+                <Link href="/waitlist#section-01" className="w-full sm:w-auto">
                   <Button
                     size="lg"
-                    className="h-12 md:h-14 px-6 md:px-8 rounded-none text-base md:text-lg font-mono uppercase tracking-wider bg-foreground bg-red-500 text-background hover:bg-black hover:text-accent-foreground transition-all shadow-2xl"
+                    className="w-full sm:w-auto rounded-none font-mono uppercase tracking-wider bg-foreground bg-red-500 text-background hover:bg-black hover:text-accent-foreground transition-all shadow-2xl"
+                    style={{ height: 'clamp(2.75rem, 5vw, 3.5rem)', paddingLeft: 'clamp(1.25rem, 3vw, 2rem)', paddingRight: 'clamp(1.25rem, 3vw, 2rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
                   >
                     Join waitlist
                   </Button>
                 </Link>
-                <p className="text-xs md:text-sm text-foreground max-w-xs">
+                <p className="text-foreground max-w-full sm:max-w-xs" style={{ fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)' }}>
                   You can either gamble the next quarter on mere opinions, or
                   you can let{" "}
                   <span className="font-bold text-foreground text-red-500">
                     1SYX{" "}
                   </span>
-                  punish your content before the market does.{" "}
+                  punish your content before the market does.{" "}
                 </p>
               </div>
             </FadeIn>

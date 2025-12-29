@@ -798,81 +798,83 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
         {/* 01 Identity / Hero Section */}
         <section
           id="section-01"
-          className="min-h-screen lg:h-screen relative overflow-hidden border-b border-border py-12 lg:py-0 scroll-mt-32"
-        >
+          className="relative overflow-hidden border-b border-border scroll-mt-32"
+          style={{ paddingTop: 'clamp(3rem, 8vw, 5rem)', paddingBottom: 'clamp(3rem, 8vw, 5rem)' }}>
+  {/* Background */}
           <ParallaxBackground src={executivesImage} opacity={40} scale={1} />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent/20 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/60 md:to-transparent z-10" />
 
-          <div className="container mx-0 px-6 relative z-20 grid grid-cols-1 lg:grid-cols-[40%_60%] h-full items-center">
-            <div className="max-w-2xl py-12">
-              <div className="font-mono text-5xl font-bold text-zinc-800 mb-4">
-                01
-              </div>
+  {/* Content */}
+            <div className="relative z-20 container mx-auto grid grid-cols-1 lg:grid-cols-[40%_60%] items-center" style={{ paddingLeft: 'clamp(1rem, 5vw, 3rem)', paddingRight: 'clamp(1rem, 5vw, 3rem)', gap: 'clamp(2rem, 5vw, 4rem)', minHeight: 'clamp(600px, 100vh, 800px)' }}>
+    
+    {/* Left Content */}
+              <div style={{ maxWidth: 'clamp(280px, 40vw, 36rem)' }}>
+                <div className="font-mono text-zinc-800" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', marginBottom: 'clamp(0.75rem, 2vw, 1.25rem)' }}>
+                  01
+                </div>
+
               <FadeIn>
-                <h1 className="text-5xl md:text-6xl font-serif mb-8 leading-tight">
-                  Your brand’s <br />
-                  X-factor,{" "}
-                  <span className="text-accent">under inspection</span>
-                </h1>
-                <p className="text-xl md:text-xl text-muted-foreground leading-relaxed mb-8">
-                  The engine that stops your content from pretending it works.
-                  1SYX is a marketing intelligence system that reads your story
-                  like a sceptical buyer, not a friendly agency.
-                </p>
-              </FadeIn>
+        <h1 className="font-serif leading-tight" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.75rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
+          Your brand's <br />
+          X-factor,{" "}
+          <span className="text-accent">under inspection</span>
+        </h1>
 
-              <div className="space-y-4 mb-12">
-                {[
-                  "No more generic content",
-                  "No more guessing your narrative",
-                  "No more copying competitors",
-                  "One system that aligns everything you say with what actually moves deals",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 shrink-0" />
-                    <p className="text-lg">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <p className="text-muted-foreground leading-relaxed" style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}>
+          The engine that stops your content from pretending it works.
+          1SYX reads your story like a sceptical buyer, not a friendly agency.
+        </p>
+      </FadeIn>
 
-            {/* Right Side: Video Placeholder */}
-            <div className="w-full relative md:mx-18 mt-8 lg:mt-0 lg:ml-28 flex items-center justify-center">
-
-              <div className="w-full aspect-video bg-white relative overflow-hidden border border-zinc-800 shadow-2xl group">
-                <video
-                  className="w-full h-full object-contain transition-all duration-700"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                >
-                  <source src={analysisVideo} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-
-                {/* Blur Overlay - Click to reveal */}
-                {showVideoOverlay && (
-                  <div
-                    onClick={() => setShowVideoOverlay(false)}
-                    className="absolute inset-0 z-10 cursor-pointer flex items-center justify-center bg-background/30 backdrop-blur-md transition-opacity duration-300"
-                  >
-                    <div className="text-center">
-                      <p className="font-mono text-sm md:text-base font-bold text-foreground uppercase tracking-widest">
-                        Click for sneak peek
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                
-
-                {/* Grid overlay */}
-                <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none z-0"></div>
-              </div>
-            </div>
+      <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 2vw, 1rem)' }}>
+        {[
+          "No more generic content",
+          "No more guessing your narrative",
+          "No more copying competitors",
+          "One system that aligns everything you say with what actually moves deals",
+        ].map((item, i) => (
+          <div key={i} className="flex items-start" style={{ gap: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}>
+            <span className="shrink-0 rounded-full bg-accent" style={{ marginTop: 'clamp(0.375rem, 1vw, 0.5rem)', width: 'clamp(0.375rem, 1vw, 0.5rem)', height: 'clamp(0.375rem, 1vw, 0.5rem)' }} />
+            <p style={{ fontSize: 'clamp(0.875rem, 1.8vw, 1.125rem)' }}>{item}</p>
           </div>
-        </section>
+        ))}
+      </div>
+    </div>
+
+    {/* Right: Video */}
+    <div className="w-full flex items-center justify-center">
+      <div className="w-full aspect-video bg-white relative overflow-hidden border border-zinc-800 shadow-2xl" style={{ maxWidth: 'clamp(280px, 90vw, 48rem)' }}>
+
+        <video
+          className="w-full h-full object-contain"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src={analysisVideo} type="video/mp4" />
+        </video>
+
+        {/* Click overlay */}
+        {showVideoOverlay && (
+          <div
+            onClick={() => setShowVideoOverlay(false)}
+            className="absolute inset-0 z-10 flex items-center justify-center
+              bg-background/40 backdrop-blur-md cursor-pointer"
+          >
+            <p className="font-mono uppercase tracking-widest" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
+              Click for sneak peek
+            </p>
+          </div>
+        )}
+
+        {/* Grid texture */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
+      </div>
+    </div>
+  </div>
+</section>
+
 
         {/* 02 The Stacked Damage (Redesigned) */}
         <Section

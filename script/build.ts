@@ -1,6 +1,6 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile, cp } from "fs/promises";
+import { rm, readFile, cp, writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 
 // server deps to bundle to reduce openat(2) syscalls
@@ -51,6 +51,13 @@ async function buildAll() {
     console.warn(`Warning: Could not copy LinkedIn image: ${error.message}`);
   }
 
+  console.log("creating _redirects file for SPA routing...");
+  // Create _redirects file for Netlify SPA routing
+  const redirectsContent = `/*    /index.html   200\n`;
+  const redirectsPath = join("dist", "public", "_redirects");
+  await writeFile(redirectsPath, redirectsContent, "utf-8");
+  console.log("_redirects file created");
+
   console.log("building server...");
   const pkg = JSON.parse(await readFile("package.json", "utf-8"));
   const allDeps = [
@@ -72,6 +79,60 @@ async function buildAll() {
     external: externals,
     logLevel: "info",
   });
+
+  console.log("creating Netlify serverless function wrapper...");
+  // Create Netlify function directory
+  const netlifyFunctionDir = join("netlify", "functions");
+  await mkdir(netlifyFunctionDir, { recursive: true });
+  
+  // Copy the built server to the functions directory
+  const serverSource = join("dist", "index.cjs");
+  const serverDest = join(netlifyFunctionDir, "server.cjs");
+  try {
+    await cp(serverSource, serverDest);
+    console.log("Server bundle copied to netlify/functions");
+  } catch (error: any) {
+    console.warn(`Warning: Could not copy server bundle: ${error.message}`);
+  }
+
+  // Create the serverless-http wrapper for Netlify
+  // Note: serverless-http needs to be installed as a dependency
+  const serverlessWrapper = `// Netlify serverless function wrapper
+const serverless = require('serverless-http');
+
+// Import the Express app from the built server
+// We need to set NETLIFY_FUNCTION to prevent the server from starting
+process.env.NETLIFY_FUNCTION = 'true';
+process.env.NODE_ENV = 'production';
+
+let app;
+try {
+  // The built server exports the app
+  const serverModule = require('./server.cjs');
+  app = serverModule.app || serverModule.default?.app || serverModule;
+  
+  if (!app || typeof app.use !== 'function') {
+    throw new Error('Could not find Express app in server module');
+  }
+} catch (error) {
+  console.error('Error loading server module:', error);
+  // Fallback Express app
+  const express = require('express');
+  app = express();
+  app.get('*', (req, res) => {
+    res.status(500).json({ error: 'Server not properly configured', message: error.message });
+  });
+}
+
+// Wrap the Express app with serverless-http
+module.exports.handler = serverless(app, {
+  binary: ['image/*', 'application/pdf'],
+});
+`;
+  
+  const wrapperPath = join(netlifyFunctionDir, "server.js");
+  await writeFile(wrapperPath, serverlessWrapper, "utf-8");
+  console.log("Netlify serverless function wrapper created");
 }
 
 buildAll().catch((err) => {
