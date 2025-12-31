@@ -80,12 +80,13 @@ const formSchema = z.object({
       "GM",
       "VP",
       "CXO",
+      "Other",
     ],
     {
       required_error: "Please select your hierarchy level.",
     },
   ),
-  function: z.enum(["Marketing", "Sales", "Product", "Agency"], {
+  function: z.enum(["Marketing", "Sales", "Product", "Agency", "Engineering", "Other"], {
     required_error: "Please select your function.",
   }),
   companySize: z.string({ required_error: "Please select company size." }),
@@ -263,7 +264,7 @@ const featuresData = [
         </div>
         <div>
           <h4 className="text-xl font-bold mb-2">
-            Daily content from your activation date till 31 January
+            30 Days of 1SYX Trial - Daily Content Generation
           </h4>
           <p className="text-zinc-400 leading-relaxed mb-4">
             One content piece per day. You choose the format:
@@ -287,13 +288,11 @@ const featuresData = [
     content: (
       <div className="space-y-6">
         <h4 className="text-xl font-bold mb-2">
-          Each day in January, one waitlist member receives a 10x content
-          upgrade.
+          Post-Launch, Daily 1 waitlist member gets a 10x boost
         </h4>
         <ul className="list-disc pl-5 space-y-3 text-zinc-400">
           <li>
-            Generate up to 10 content pieces per day for the remaining days in
-            January instead of 1.
+            Generate up to 10 content pcs/day for remaining days in your trial (instead of 1 pc/day)
           </li>
           <li>
             No roll over. Unused content slots on any day expire at the end of
@@ -311,24 +310,18 @@ const featuresData = [
   },
   {
     id: 2,
-    heading: "What after Jan26",
+    heading: "What after 30-Days Free Trial",
     content: (
       <div className="space-y-6">
         <ul className="list-disc pl-5 space-y-3 text-zinc-400">
           <li>
-            Waitlist acceptance window is open only till midnight on 31 December
-            2025.
+            Waitlist acceptance window is open only till midnight on 31 Jan 2026.
           </li>
-          <li>We will accept a maximum of 1,000 Jan Waitlist accounts.</li>
-          <li>No credit card needed for Jan Waitlist access.</li>
+          <li>Limited Seats (One 1SYX Account/Org) - Max. 1,000</li>
+          <li>No credit card needed for Waitlist Members (for 30-day Trial).</li>
           <li>
-            You keep everything 1SYX creates for you. After 31 January, new
-            diagnostics and new content generation pause unless you move to a
-            paid plan.
-          </li>
-          <li>
-            If you discover 1SYX after 31 January, you will still get a 1 week
-            free trial with a fixed credit limit instead of Jan Waitlist access.
+            You can use/download everything 1SYX creates for you for 30 Days after Trial Ends.
+            <p className="text-zinc-400">*(Non-Waitlist members get 7-Day Trial & 7 Day Data Retention post-trial.)</p>
           </li>
         </ul>
       </div>
@@ -363,7 +356,7 @@ const WaitlistFeatures = () => {
             </span>
           </h2>
           <p className="text-accent text-lg md:text-xl font-mono uppercase tracking-wider">
-            Every day, 1 waitlist member gets a 10x boost
+            Post-Launch, Daily 1 waitlist member gets a 10x boost
           </p>
         </div>
 
@@ -799,13 +792,13 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
         <section
           id="section-01"
           className="relative overflow-hidden border-b border-border scroll-mt-32"
-          style={{ paddingTop: 'clamp(3rem, 8vw, 5rem)', paddingBottom: 'clamp(3rem, 8vw, 5rem)' }}>
+          >
   {/* Background */}
           <ParallaxBackground src={executivesImage} opacity={40} scale={1} />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/60 md:to-transparent z-10" />
 
   {/* Content */}
-            <div className="relative z-20 container mx-auto grid grid-cols-1 lg:grid-cols-[40%_60%] items-center" style={{ paddingLeft: 'clamp(1rem, 5vw, 3rem)', paddingRight: 'clamp(1rem, 5vw, 3rem)', gap: 'clamp(2rem, 5vw, 4rem)', minHeight: 'clamp(600px, 100vh, 800px)' }}>
+            <div className="relative z-20 container mx-0 grid grid-cols-1 lg:grid-cols-[40%_60%] items-center" style={{ paddingLeft: 'clamp(1rem, 5vw, 3rem)', paddingRight: 'clamp(1rem, 5vw, 3rem)', gap: 'clamp(2rem, 5vw, 4rem)', minHeight: 'clamp(600px, 100vh, 800px)' }}>
     
     {/* Left Content */}
               <div style={{ maxWidth: 'clamp(280px, 40vw, 36rem)' }}>
@@ -1107,6 +1100,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
                                 "GM",
                                 "VP",
                                 "CXO",
+                                "Other",
                               ].map((item) => (
                                 <SelectItem key={item} value={item}>
                                   {item}
@@ -1137,7 +1131,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="rounded-none">
-                              {["Marketing", "Sales", "Product", "Agency"].map(
+                              {["Marketing", "Sales", "Product", "Agency", "Engineering", "Other"].map(
                                 (item) => (
                                   <SelectItem key={item} value={item}>
                                     {item}
@@ -1274,6 +1268,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
                                 "Every channel tells a slightly different story about us",
                                 "Reviews are long, political and still let vague lines slip through",
                                 "We just do not know which sentences are actually working",
+                                "Other",
                               ].map((item) => (
                                 <SelectItem
                                   key={item}
@@ -1525,7 +1520,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
           <div className="flex-1 overflow-y-auto space-y-4 py-4">
             {/* Editable Content */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-300">
+              <label className="text-sm font-medium text-red-500">
                 Post Content (Editable)
               </label>
               <Textarea
@@ -1554,7 +1549,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
 
             {/* Fixed Link (Read-only) */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-300">
+              <label className="text-sm font-medium text-red-500">
                 Link (Automatically Added)
               </label>
               <div className="bg-zinc-900 border border-zinc-700 p-3 rounded-md text-zinc-400 text-sm">
@@ -1564,7 +1559,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
 
             {/* Fixed Hashtags (Read-only) */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-300">
+              <label className="text-sm font-medium text-red-500">
                 Hashtags (Automatically Added)
               </label>
               <div className="bg-zinc-900 border border-zinc-700 p-3 rounded-md text-zinc-400 text-sm">
@@ -1574,8 +1569,8 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
 
             {/* Preview of Full Post */}
             <div className="space-y-2 pt-4 border-t border-zinc-800">
-              <label className="text-sm font-medium text-zinc-300">
-                Full Post Preview
+              <label className="text-sm font-medium text-red-500">
+                Image Preview (Auto-Generated)
               </label>
               {/* LinkedIn-style post preview card */}
               <div className="bg-zinc-900 border border-zinc-700 rounded-md overflow-hidden">
@@ -1586,14 +1581,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
                     alt="LinkedIn post preview"
                     className="w-full h-full object-cover"
                   />
-                </div>
-                {/* Text content */}
-                <div className="p-4">
-                  <div className="text-sm text-zinc-300 whitespace-pre-wrap">
-                    {postContent.trim() || "(Your content will appear here)"}
-                    {postContent.trim() && `\n\n${postLink}\n\n${postHashtags}`}
-                  </div>
-                </div>
+                </div>                
               </div>
             </div>
 
@@ -1609,7 +1597,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
                 htmlFor="post-confirm"
                 className="text-sm text-zinc-300 cursor-pointer leading-relaxed"
               >
-                I confirm this content and agree to post this on LinkedIn
+                I confirm/agree to post this on LinkedIn.
               </label>
             </div>
           </div>
@@ -1645,8 +1633,7 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
           </DialogHeader>
           <div className="py-4">
             <p className="mb-4 text-zinc-400">
-              Choose if you want to join the daily 10x content upgrade.
-            </p>
+              Should we add you to Daily Lucky Draw (for 10X Content Boost)?</p>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <div

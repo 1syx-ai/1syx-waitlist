@@ -1,28 +1,59 @@
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 import { Footer } from "@/components/ui/footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Linkedin } from "lucide-react";
 
-// Placeholder Images
-import ceoImage from "@assets/generated_images/professional_male_ceo_headshot.png";
-import cpoImage from "@assets/generated_images/professional_female_executive_headshot.png";
-import cfoImage from "@assets/generated_images/professional_male_cto_headshot.png";
-import ctoImage from "@assets/generated_images/professional_female_vp_headshot.png";
-import overviewBg from "@assets/ChatGPT_Image_Dec_14,_2025,_05_58_22_PM_1765887445908.png";
-import nothiringBg from "@assets/fuckyou.png";
+// Team member images
+import sanjeevImg from "@assets/generated_images/Sanjeev.png";
+import harshveerImg from "@assets/generated_images/Harshveer.png";
+import deepanshuImg from "@assets/generated_images/Deepanshu.png";
+import shreynshImg from "@assets/generated_images/Shreyansh.png";
+import neilImg from "@assets/generated_images/Neil.png";
+import vikasImg from "@assets/generated_images/Vikas.png";
+import anshulImg from "@assets/generated_images/Anshul.png";
+import anubhavImg from "@assets/generated_images/Anubhav.png";
+import mayankImg from "@assets/generated_images/Mayank.png";
+import anjanaImg from "@assets/generated_images/Anjana.png";
+import overviewBgImg from "@assets/ChatGPT_Image_Dec_14,_2025,_05_58_22_PM_1765887445908.png";
+import nothiringBgImg from "@assets/fuckyou.png";
+
+const teamImages = {
+  Sanjeev: sanjeevImg,
+  Harshveer: harshveerImg,
+  Deepanshu: deepanshuImg,
+  Shreynsh: shreynshImg,
+  Neil: neilImg,
+  Vikas: vikasImg,
+  Anshul: anshulImg,
+  Anubhav: anubhavImg,
+  Mayank: mayankImg,
+  Anjana: anjanaImg,
+};
+
+const overviewBg = overviewBgImg;
+const nothiringBg = nothiringBgImg;
 // --- Components ---
 
 const TeamCard = ({ member }: { member: any }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const handleCardClick = () => {
-    setIsFlipped(!isFlipped);
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only flip if the click did not originate from a button
+    const target = e.target as HTMLElement;
+    if (!target.closest('button')) {
+      setIsFlipped(!isFlipped);
+    }
   };
 
-  const handleLinkedInClick = (e: MouseEvent) => {
+  const handleLinkedInClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     e.stopPropagation();
-    window.open(member.linkedin, "_blank");
+    e.nativeEvent.stopImmediatePropagation();
+    if (member.linkedin) {
+      window.open(member.linkedin, "_blank", "noopener,noreferrer");
+    }
+    return false;
   };
 
   return (
@@ -37,12 +68,15 @@ const TeamCard = ({ member }: { member: any }) => {
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Front Face */}
-        <div className="absolute inset-0 backface-hidden bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-          <div className="h-[75%] w-full overflow-hidden bg-zinc-100">
+        <div 
+          className="absolute inset-0 backface-hidden bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+          style={{ pointerEvents: isFlipped ? 'none' : 'auto' }}
+        >
+          <div className="h-[75%] w-full overflow-hidden bg-zinc-100 flex items-center justify-center">
             <img
               src={member.image}
               alt={member.name}
-              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
           </div>
           <div className="h-[25%] p-4 flex flex-col justify-between bg-white relative z-10">
@@ -66,7 +100,7 @@ const TeamCard = ({ member }: { member: any }) => {
         {/* Back Face */}
         <div
           className="absolute inset-0 backface-hidden bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden p-6 flex flex-col items-center justify-center text-center shadow-xl"
-          style={{ transform: "rotateY(180deg)" }}
+          style={{ transform: "rotateY(180deg)", pointerEvents: isFlipped ? 'auto' : 'none' }}
         >
           <div className="mb-4">
             <h3 className="text-xl font-bold text-white leading-tight">
@@ -79,10 +113,14 @@ const TeamCard = ({ member }: { member: any }) => {
           <p className="text-sm text-zinc-400 leading-relaxed max-w-[90%]">
             {member.bio}
           </p>
-          <div className="mt-6 pt-6 border-t border-zinc-800 w-full flex justify-center">
-             <button
+          <div 
+            className="mt-6 pt-6 border-t border-zinc-800 w-full flex justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
               onClick={handleLinkedInClick}
-              className="text-white hover:text-red-500 transition-colors flex items-center gap-2 text-xs font-mono uppercase tracking-wider"
+              className="text-white hover:text-red-500 transition-colors flex items-center gap-2 text-xs font-mono uppercase tracking-wider cursor-pointer pointer-events-auto relative z-10"
+              type="button"
             >
               <Linkedin className="w-4 h-4" /> Connect
             </button>
@@ -103,35 +141,35 @@ export default function About() {
     technical: [
       {
         id: 1,
-        name: "Shreynsh Singh",
-        role: "Software Engineer",
-        image: cfoImage,
-        linkedin: "https://linkedin.com",
-        bio: "Builds the bones of 1SYX so it stays fast, stable and calm even when you throw huge stories at it. Thinks in edge cases, ships in straight lines.",
+        name: "Sanjeev Kumar",
+        role: "Director of DevOps Engineering",
+        image: teamImages.Sanjeev,
+        linkedin: "https://www.linkedin.com/in/sanjeev-kumar-89819216/",
+        bio: "Keeps the lights on, the pipes clean and the system trustworthy. Thinks in failure modes so you never have to see them.",
       },
       {
         id: 2,
         name: "Harshveer Singh",
         role: "AI Developer",
-        image: cfoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Harshveer,
+        linkedin: "https://www.linkedin.com/in/harshveer-singh-1a6912205/",
         bio: "Lives inside models, prompts and guardrails so 1SYX argues like a sharp buyer, not a generic chatbot. Quiet, careful and ruthless about quality.",
       },
       {
         id: 3,
         name: "Deepanshu Singh",
         role: "AI Workflow Designer",
-        image: cfoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Deepanshu,
+        linkedin: "https://www.linkedin.com/in/deepanshu-singh-ab0249148/",
         bio: "Designs how you move through 1SYX so the heavy thinking feels light. Obsessed with making powerful systems feel simple, honest and very hard to misuse.",
       },
       {
         id: 4,
-        name: "Sanjeev Kumar",
-        role: "Director of DevOps Engineering",
-        image: cfoImage,
-        linkedin: "https://linkedin.com",
-        bio: "Keeps the lights on, the pipes clean and the system trustworthy. Thinks in failure modes so you never have to see them.",
+        name: "Shreynsh Singh",
+        role: "Software Engineer",
+        image: teamImages.Shreynsh,
+        linkedin: "https://www.linkedin.com/in/shreynsh-singh-464975189/",
+        bio: "Builds the bones of 1SYX so it stays fast, stable and calm even when you throw huge stories at it. Thinks in edge cases, ships in straight lines.",
       },
     ],
     sales: [
@@ -139,24 +177,24 @@ export default function About() {
         id: 5,
         name: "Neil Roy",
         role: "Co-Founder & VP Sales",
-        image: ceoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Neil,
+        linkedin: "https://www.linkedin.com/in/technoducationist/",
         bio: "Builds the GTM systems that sit around 1SYX. Thinks in playbooks, sequences and partner motions so the product is never just a login screen.",
       },
       {
         id: 6,
         name: "Vikas Sagar",
         role: "Director of Sales",
-        image: ceoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Vikas,
+        linkedin: "https://www.linkedin.com/in/vikas-sagar-5a1b7651/",
         bio: "Carries quotas in his head when he reviews every idea. If a sentence cannot survive a real pipeline conversation, Vikas will not let it reach you.",
       },
       {
         id: 7,
         name: "Anshul Bhardwaj",
         role: "Sales and Operations",
-        image: ceoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Anshul,
+        linkedin: "https://www.linkedin.com/in/anshul-bhardwaj-715a0a280/",
         bio: "Keeps customer promises tied to actual delivery. Makes sure trials, feedback and support feel like a relationship, not tickets in a queue.",
       },
     ],
@@ -165,34 +203,26 @@ export default function About() {
         id: 8,
         name: "Anubhav Gautam",
         role: "Head of Marketing",
-        image: ctoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Anubhav,
+        linkedin: "https://www.linkedin.com/in/anubhav--gautam/",
         bio: "Guards the bigger KLYRR story while 1SYX grows. Connects what we build today with the market we know we will have to answer to in three years.",
       },
       {
         id: 9,
         name: "Mayank Sehra",
         role: "Marketing Lead at KLYRR",
-        image: cpoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Mayank,
+        linkedin: "https://www.linkedin.com/in/mayank-sehra-029438258/",
         bio: "Treats 1SYX like a live experiment in his own hands first. If a playbook does not work on our campaigns, it never gets suggested for yours.",
-      },
-      {
-        id: 10,
-        name: "Aarya Shetty",
-        role: "Brand and Experience Design",
-        image: cpoImage,
-        linkedin: "https://linkedin.com",
-        bio: "Designs how clarity feels inside the product and in every touch around it. Her job is simple, make it impossible to forget what 1SYX stands for.",
       },
     ],
     hr: [
       {
-        id: 11,
+        id: 10,
         name: "Anjana Khandelwal",
         role: "Head of Human Resources and Recruitment",
-        image: cpoImage,
-        linkedin: "https://linkedin.com",
+        image: teamImages.Anjana,
+        linkedin: "https://www.linkedin.com/in/anjana-jayam/",
         bio: "Protects the culture that lets people tell the truth about the work. Brings in humans who care more about craft than titles.",
       },
     ],

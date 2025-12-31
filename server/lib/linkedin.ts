@@ -1,20 +1,14 @@
 import { readFileSync } from "fs";
-import { join } from "path";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // LinkedIn API configuration
 const LINKEDIN_CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
 const LINKEDIN_CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
-const LINKEDIN_REDIRECT_URI = process.env.LINKEDIN_REDIRECT_URI;
+const LINKEDIN_REDIRECT_URL = process.env.LINKEDIN_REDIRECT_URL;
 
-if (!LINKEDIN_CLIENT_ID || !LINKEDIN_CLIENT_SECRET || !LINKEDIN_REDIRECT_URI) {
+if (!LINKEDIN_CLIENT_ID || !LINKEDIN_CLIENT_SECRET || !LINKEDIN_REDIRECT_URL) {
   throw new Error(
     "Missing LinkedIn credentials in environment variables. " +
-    "Please set LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, and LINKEDIN_REDIRECT_URI"
+    "Please set LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, and LINKEDIN_REDIRECT_URL"
   );
 }
 
@@ -38,7 +32,7 @@ export function getLinkedInAuthUrl(state: string): string {
   const params = new URLSearchParams({
     response_type: "code",
     client_id: LINKEDIN_CLIENT_ID!,
-    redirect_uri: LINKEDIN_REDIRECT_URI!,
+    redirect_uri: LINKEDIN_REDIRECT_URL!,
     state: state,
     scope: LINKEDIN_SCOPES.join(" "),
   });
@@ -53,7 +47,7 @@ export async function exchangeCodeForToken(code: string): Promise<string> {
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     code: code,
-    redirect_uri: LINKEDIN_REDIRECT_URI!,
+    redirect_uri: LINKEDIN_REDIRECT_URL!,
     client_id: LINKEDIN_CLIENT_ID!,
     client_secret: LINKEDIN_CLIENT_SECRET!,
   });

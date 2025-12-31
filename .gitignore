@@ -4,7 +4,6 @@ node_modules
 # Build outputs
 dist
 build
-*.tsbuildinfo
 
 # Environment variables
 .env
@@ -62,3 +61,18 @@ coverage/
 # Temporary files
 *.tmp
 *.temp
+
+# Netlify
+.netlify/
+netlify/functions/node_modules/
+netlify/functions/*.cjs
+netlify/functions/*.js
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager locks (optional - some teams commit these)
+# Uncomment if you don't want to commit lock files
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

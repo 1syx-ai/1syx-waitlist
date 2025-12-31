@@ -79,7 +79,7 @@ export function Navbar() {
       )}
     >
       <div className="w-full px-8 flex items-center justify-between">
-        <div className="flex items-center border">
+        <div className="flex items-center">
           <button
             key="home"
             onClick={() => scrollToSection("#hero")}
@@ -91,7 +91,7 @@ export function Navbar() {
         
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <button
               key={link.name}
@@ -121,7 +121,7 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden"
+          className="lg:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X /> : <Menu />}
@@ -130,7 +130,7 @@ export function Navbar() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border p-6 flex flex-col gap-4 shadow-xl">
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-background border-b border-border p-6 flex flex-col gap-4 shadow-xl">
           {navLinks.map((link) => (
             <button
               key={link.name}

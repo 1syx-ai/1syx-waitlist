@@ -1040,7 +1040,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 md:via-background/95 to-transparent/20 z-10"></div>
 
         {/* Content */}
-        <div className="container mx-auto relative z-20 flex items-center" style={{ paddingLeft: 'clamp(1rem, 5vw, 3rem)', paddingRight: 'clamp(1rem, 5vw, 3rem)' }}>
+        <div className="container mx-0 relative z-20 flex items-center" style={{ paddingLeft: 'clamp(1rem, 5vw, 3rem)', paddingRight: 'clamp(1rem, 5vw, 3rem)' }}>
           <div className="max-w-4xl xl:max-w-5xl" style={{ paddingTop: 'clamp(2rem, 6vw, 5rem)', paddingBottom: 'clamp(2rem, 6vw, 5rem)' }}>
             <FadeIn>
               <h1 className="font-serif font-medium leading-[1.1] tracking-tight" style={{ fontSize: 'clamp(1.875rem, 5vw, 4.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)', marginTop: 'clamp(0rem, 2vw, 2rem)' }}>

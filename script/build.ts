@@ -53,10 +53,12 @@ async function buildAll() {
 
   console.log("creating _redirects file for SPA routing...");
   // Create _redirects file for Netlify SPA routing
+  // This ensures all routes (/, /about, /waitlist, etc.) are handled by the SPA
+  // All pages are bundled by Vite: Home (/), About (/about), Waitlist (/waitlist)
   const redirectsContent = `/*    /index.html   200\n`;
   const redirectsPath = join("dist", "public", "_redirects");
   await writeFile(redirectsPath, redirectsContent, "utf-8");
-  console.log("_redirects file created");
+  console.log("_redirects file created - SPA routing configured for all pages (Home, About, Waitlist)");
 
   console.log("building server...");
   const pkg = JSON.parse(await readFile("package.json", "utf-8"));
