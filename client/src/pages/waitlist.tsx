@@ -739,14 +739,12 @@ Doing my bit to support a budding entrepreneur who is building in public.`;
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="p-4 md:p-6 border-b border-border flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur-sm z-50">
-        <Link href="/">
-          <a className="text-2xl font-bold tracking-tighter font-mono">
-            <img
-                src={logoImage}
-                alt="1SYX"
-                className="h-10 w-auto object-contain" 
-              />
-              </a>
+        <Link href="/" className="text-2xl font-bold tracking-tighter font-mono">
+          <img
+            src={logoImage}
+            alt="1SYX"
+            className="h-10 w-auto object-contain" 
+          />
         </Link>
         
         <div className="flex items-center gap-4">

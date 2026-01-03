@@ -1,15 +1,19 @@
 import { readFileSync } from "fs";
 
-// LinkedIn API configuration
-const LINKEDIN_CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
-const LINKEDIN_CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
-const LINKEDIN_REDIRECT_URL = process.env.LINKEDIN_REDIRECT_URL;
+// LinkedIn API configuration - lazy loading to avoid errors at module load time
+function getLinkedInConfig() {
+  const LINKEDIN_CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
+  const LINKEDIN_CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
+  const LINKEDIN_REDIRECT_URL = process.env.LINKEDIN_REDIRECT_URL;
 
-if (!LINKEDIN_CLIENT_ID || !LINKEDIN_CLIENT_SECRET || !LINKEDIN_REDIRECT_URL) {
-  throw new Error(
-    "Missing LinkedIn credentials in environment variables. " +
-    "Please set LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, and LINKEDIN_REDIRECT_URL"
-  );
+  if (!LINKEDIN_CLIENT_ID || !LINKEDIN_CLIENT_SECRET || !LINKEDIN_REDIRECT_URL) {
+    throw new Error(
+      "Missing LinkedIn credentials in environment variables. " +
+      "Please set LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, and LINKEDIN_REDIRECT_URL"
+    );
+  }
+
+  return { LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, LINKEDIN_REDIRECT_URL };
 }
 
 // LinkedIn OAuth endpoints
@@ -29,10 +33,11 @@ const LINKEDIN_SCOPES = [
  * Generate LinkedIn OAuth authorization URL
  */
 export function getLinkedInAuthUrl(state: string): string {
+  const { LINKEDIN_CLIENT_ID, LINKEDIN_REDIRECT_URL } = getLinkedInConfig();
   const params = new URLSearchParams({
     response_type: "code",
-    client_id: LINKEDIN_CLIENT_ID!,
-    redirect_uri: LINKEDIN_REDIRECT_URL!,
+    client_id: LINKEDIN_CLIENT_ID,
+    redirect_uri: LINKEDIN_REDIRECT_URL,
     state: state,
     scope: LINKEDIN_SCOPES.join(" "),
   });
@@ -44,12 +49,13 @@ export function getLinkedInAuthUrl(state: string): string {
  * Exchange authorization code for access token
  */
 export async function exchangeCodeForToken(code: string): Promise<string> {
+  const { LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, LINKEDIN_REDIRECT_URL } = getLinkedInConfig();
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     code: code,
-    redirect_uri: LINKEDIN_REDIRECT_URL!,
-    client_id: LINKEDIN_CLIENT_ID!,
-    client_secret: LINKEDIN_CLIENT_SECRET!,
+    redirect_uri: LINKEDIN_REDIRECT_URL,
+    client_id: LINKEDIN_CLIENT_ID,
+    client_secret: LINKEDIN_CLIENT_SECRET,
   });
 
   const response = await fetch(LINKEDIN_TOKEN_URL, {
@@ -127,13 +133,28 @@ export async function registerImageUpload(
 
 /**
  * Upload image to LinkedIn
+ * Accepts either a file path or a URL
  */
 export async function uploadImageToLinkedIn(
   accessToken: string,
   uploadUrl: string,
-  imagePath: string
+  imagePathOrUrl: string
 ) {
-  const imageBuffer = readFileSync(imagePath);
+  let imageBuffer: Buffer;
+  
+  // Check if it's a URL (starts with http:// or https://)
+  if (imagePathOrUrl.startsWith("http://") || imagePathOrUrl.startsWith("https://")) {
+    // Fetch image from URL
+    const imageResponse = await fetch(imagePathOrUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image from URL: ${imageResponse.statusText}`);
+    }
+    const arrayBuffer = await imageResponse.arrayBuffer();
+    imageBuffer = Buffer.from(arrayBuffer);
+  } else {
+    // Read from file system
+    imageBuffer = readFileSync(imagePathOrUrl);
+  }
 
   const uploadResponse = await fetch(uploadUrl, {
     method: "PUT",
@@ -141,7 +162,7 @@ export async function uploadImageToLinkedIn(
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "image/jpeg",
     },
-    body: imageBuffer,
+    body: imageBuffer as any,
   });
 
   if (!uploadResponse.ok) {

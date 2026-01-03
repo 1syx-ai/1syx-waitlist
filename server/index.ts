@@ -12,6 +12,7 @@ import {
 } from "./lib/linkedin.js";
 import { randomBytes } from "crypto";
 import { join } from "path";
+import { existsSync } from "fs";
 
 const app = express();
 const httpServer = createServer(app);
@@ -350,29 +351,45 @@ Check out 1SYX: https://www.linkedin.com/showcase/1syx-ai/
       log(`Using default post content`);
     }
 
-    // Image path - in production, assets are in dist/public, in dev they're in client/src/assets
-    const imagePath = process.env.NODE_ENV === "production"
-      ? join(
-          process.cwd(),
-          "dist",
-          "public",
-          "linkedin_postimage",
-          "WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg"
-        )
-      : join(
-          process.cwd(),
-          "client",
-          "src",
-          "assets",
-          "linkedin_postimage",
-          "WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg"
-        );
+    // Image path/URL - handle different environments
+    // For Netlify Functions, use the public URL since file system access is unreliable
+    // For regular production/dev, use file system path
+    const imageFileName = "WhatsApp Image 2025-12-23 at 20.06.11_1ed41664.jpg";
+    let imagePathOrUrl: string;
+    
+    if (process.env.NETLIFY_FUNCTION === "true" || process.env.NETLIFY === "true") {
+      // Netlify Functions environment - fetch from public URL
+      // Get the site URL from environment or construct from request
+      const siteUrl = process.env.URL || process.env.DEPLOY_PRIME_URL || 
+                     (req.protocol + "://" + req.get("host"));
+      imagePathOrUrl = `${siteUrl}/linkedin_postimage/${imageFileName}`;
+      log(`Using image URL for Netlify Functions: ${imagePathOrUrl}`);
+    } else if (process.env.NODE_ENV === "production") {
+      // Regular production server - use file system
+      imagePathOrUrl = join(
+        process.cwd(),
+        "dist",
+        "public",
+        "linkedin_postimage",
+        imageFileName
+      );
+    } else {
+      // Development - use file system
+      imagePathOrUrl = join(
+        process.cwd(),
+        "client",
+        "src",
+        "assets",
+        "linkedin_postimage",
+        imageFileName
+      );
+    }
 
     // Create LinkedIn post with image
     const postResult = await createLinkedInPostWithImage(
       accessToken,
       postText,
-      imagePath
+      imagePathOrUrl
     );
 
     log(`LinkedIn post created successfully: ${postResult.id}`);

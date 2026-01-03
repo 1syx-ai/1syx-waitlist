@@ -196,7 +196,7 @@ const InteractiveWhoItIsFor = () => {
       ref={targetRef}
       className="relative h-[500vh] bg-zinc-950 scroll-mt-32"
     >
-      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+      <div className="sticky top-5 h-screen flex flex-col overflow-hidden">
         {/* Background Noise */}
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
           <img
@@ -334,7 +334,7 @@ const InteractiveWhoItIsFor = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.125rem, 0.5vw, 0.375rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
+                  <div className="flex flex-col flex-1 min-h-0 overflow-y-auto" style={{ gap: 'clamp(0.125rem, 0.5vw, 0.375rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.5rem)' }}>
                     {[
                       "Know their product is stronger than their story",
                       "Are tired of hearing 'our leads are bad' while reading safe-soft messaging",
@@ -410,7 +410,7 @@ const InteractiveWhoItIsFor = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
+                  <div className="flex flex-col flex-1 min-h-0 overflow-y-auto" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
                     <p className="text-zinc-900" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
                       So you stop mistaking it for yet another AI
                       writing toy . . .
@@ -462,7 +462,7 @@ const InteractiveWhoItIsFor = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col flex-1 min-h-0" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
+                  <div className="flex flex-col flex-1 min-h-0 overflow-y-auto" style={{ gap: 'clamp(0.75rem, 1.5vw, 1.25rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
                     <p className="text-zinc-900" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
                       Most tools try to help you write faster.{" "}
                       <span className="text-red-500 font-bold">
@@ -544,7 +544,7 @@ const InteractiveWhoItIsFor = () => {
                 {/* content area */}
                 <div className="flex flex-col h-full min-h-0" style={{ padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
                   {/* make inner column distribute space so bottom block stays aligned */}
-                  <div className="flex-1 flex flex-col justify-between min-h-0">
+                  <div className="flex-1 flex flex-col justify-between min-h-0 overflow-y-auto">
                     {/* TOP: headline + intro */}
                     <div className="flex flex-col" style={{ gap: 'clamp(0.5rem, 1.5vw, 1rem)' }}>
                       <h3 className="font-serif font-extrabold text-zinc-900 tracking-tight" style={{ fontSize: 'clamp(1.25rem, 3.5vw, 2.25rem)' }}>
@@ -2061,3 +2061,4 @@ export default function Home() {
     </div>
   );
 }
+

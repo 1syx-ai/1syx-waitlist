@@ -97,6 +97,16 @@ async function buildAll() {
     console.warn(`Warning: Could not copy server bundle: ${error.message}`);
   }
 
+  // Copy LinkedIn post image to function directory for serverless access
+  const linkedinImageSrcForFunction = join("dist", "public", "linkedin_postimage");
+  const linkedinImageDestForFunction = join(netlifyFunctionDir, "linkedin_postimage");
+  try {
+    await cp(linkedinImageSrcForFunction, linkedinImageDestForFunction, { recursive: true });
+    console.log("LinkedIn post image copied to netlify/functions");
+  } catch (error: any) {
+    console.warn(`Warning: Could not copy LinkedIn image to functions: ${error.message}`);
+  }
+
   // Create the serverless-http wrapper for Netlify
   // Note: serverless-http needs to be installed as a dependency
   const serverlessWrapper = `// Netlify serverless function wrapper
